@@ -51,19 +51,17 @@ class Login extends Database {
                         $_SESSION['u_email'] = $rowUsers['epasts'];
                         $_SESSION['u_username'] = $rowUsers['lietotajvards'];
                         
-
                         $userID = $rowUsers['ID'];
-                        $sql = "SELECT lomas_ID FROM lietotajiem_ir_lomas WHERE lietotaji_ID='$userID'";
+                        $sql = "SELECT * FROM lietotajiem_ir_lomas WHERE lietotaji_ID='$userID'";
                         $resultRoles = $this->connect()->query($sql);
 
-                        if ($rowRoles = $resultUsers->fetch_assoc()) {
+                        if ($rowRoles = $resultRoles->fetch_assoc()) {
                             
                             $_SESSION['u_role'] = $rowRoles['lomas_ID'];
-                            
-                            header("Location: ../index.php?login=success");
-                            exit();
                         }
 
+                        header("Location: ../index.php?login=success");
+                        exit();
                     }
 
                 }

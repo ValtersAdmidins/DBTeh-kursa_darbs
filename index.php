@@ -8,7 +8,12 @@
 
         <?php
 
-            echo '';
+            echo("{$_SESSION['u_ID']}"."<br />");
+            echo("{$_SESSION['u_first']}"."<br />");
+            echo("{$_SESSION['u_last']}"."<br />");
+            echo("{$_SESSION['u_email']}"."<br />");
+            echo("{$_SESSION['u_username']}"."<br />");
+            echo("{$_SESSION['u_role']}"."<br />");
 
         ?>
 
