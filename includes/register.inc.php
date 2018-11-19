@@ -76,12 +76,12 @@ class Register extends Database {
 
                                     if ($role === "pasazieris") {
 
-                                        $sql = "INSERT INTO lietotajiem_ir_lomas (lietotaji_ID, lomas_ID) VALUES ('$userID', 0);";
+                                        $sql = "INSERT INTO lietotajiem_ir_lomas (lietotaji_ID, lomas_ID) VALUES ('$userID', 1);";
                                     }
     
                                     else {
     
-                                        $sql = "INSERT INTO lietotajiem_ir_lomas (lietotaji_ID, lomas_ID) VALUES ('$userID', 1);";
+                                        $sql = "INSERT INTO lietotajiem_ir_lomas (lietotaji_ID, lomas_ID) VALUES ('$userID', 2);";
                                     }
 
                                     $result = $this->connect()->query($sql);

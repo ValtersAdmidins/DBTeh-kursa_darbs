@@ -6,7 +6,6 @@
     include 'includes/database.inc.php';
 
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
