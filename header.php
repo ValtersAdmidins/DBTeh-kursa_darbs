@@ -1,11 +1,6 @@
 <!--    KURSA DARBS DBTeh_2018    -->
 <!--    VALTERS ĀDMĪDIŅŠ 3ITB     -->
 <!--        17.11.2018            -->
-<?php
-
-    include 'includes/database.inc.php';
-
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>DBTeh-uber</title>
     <meta name="Valters Ādmīdiņš" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
 </head>
 <body>
@@ -21,36 +17,40 @@
 
         my header
 
-        <div class="login-box">
-            <div class="login-box-content">
+        <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" href="index.php">Home</a>
+                <div class="ml-auto">
 
-                <?php
+                    <?php
+                        session_start();
 
-                    session_start();
+                        if (isset($_SESSION['u_ID'])) {
 
-                    if (isset($_SESSION['u_ID'])) {
+                            echo '<form action="process/loggingOut.php" method="POST">
+                                    <div class="form-group">
+                                        <button type="submit" name="submit">Izlogoties</button>
+                                    </div>
+                                </form>';
+                        }
 
-                        echo '<form action="process/loggingOut.php" method="POST">
-                                <button type="submit" name="submit">Izlogoties</button>
-                              </form>';
-                    }
+                        else {
 
-                    else {
+                            echo '<form action="process/loggingIn.php" method="POST">
+                                    <div class="form-group">
+                                        <input type="text" name="userORemail" placeholder="Lietotājvārds/epasts*">
+                                        <input type="password" name="password" placeholder="Parole*">
+                                        <button type="submit" name="submit">Pieslēgties</button>
+                                    </div>
+                                </form>
 
-                        echo '<form action="process/loggingIn.php" method="POST">
-                                <input type="text" name="userORemail" placeholder="Lietotājvārds/epasts*">
-                                <input type="password" name="password" placeholder="Parole*">
-                                <button type="submit" name="submit">Pieslēgties</button>
-                              </form>
+                                <div class="form-group">
+                                    <a class="float-right" href="register.php">Reģistrēties</a>
+                                </div>';
+                            }
+                    ?>
 
-                          <a href="register.php">Reģistrēties</a>';
-                    }
-
-
-                ?>
-
-            </div>
-        </div>
-
+                </div>
+            </a>
+        </nav>
 
     </header>

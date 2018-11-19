@@ -9,13 +9,13 @@
 
     <?php
 
-        if (isset($_SESSION['u_ID']) && $_SESSION['u_role'] == 1) {
+        if (isset($_SESSION['u_ID']) && $_SESSION['u_role'] == 2) {
 
     ?>
 
     <form id="passengerRoute" action="process/addingNewRoute.php" method="POST">
 
-        <h2 style="text-align: center;">Izveidot jaunu pasažiera maršrutu</h2>
+        <h2 style="text-align: center;">Izveidot jaunu šofera maršrutu</h2>
         <br>
         <div class="form-group">
             <label for="country_from">Valsts no: </label>
@@ -79,7 +79,7 @@
 
         <div class="form-group">
             <div class="input-group">
-                <label for="seats">Nepieciešamās sēdvietas: </label>
+                <label for="seats">Pieejamās sēdvietas: </label>
                 <input type="number" min="1" name="seats">
             </div>
         </div>

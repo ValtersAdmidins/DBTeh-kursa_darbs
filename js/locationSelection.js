@@ -12,7 +12,7 @@ $(document).ready(function(){
                 }
             });
         } else {
-            $('#city_from').html('<option value="">Izvēlēlieties valsti vispirms</option>');
+            $('#city_from').html('<option value="">Izvēlēlieties valsti vispirms*</option>');
         }
     });
 
@@ -28,7 +28,7 @@ $(document).ready(function(){
                 }
             });
         } else {
-            $('#city_to').html('<option value="">Izvēlēlieties valsti vispirms</option>');
+            $('#city_to').html('<option value="">Izvēlēlieties valsti vispirms*</option>');
         }
     });
     
