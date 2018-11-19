@@ -31,7 +31,7 @@ class Routes extends Database {
 
     protected function getAllDriverRoutes() {
 
-        $sql = "SELECT * FROM marsruti JOIN lietotajiem_ir_marsruti ON marsruti_ID=ID;";
+        $sql = "SELECT * FROM visi_soferu_marsruti JOIN marsruti ON marsruti_ID=ID;";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -47,8 +47,25 @@ class Routes extends Database {
 
     }
 
+    // SELECT * FROM visi_soferu_marsruti 
+// JOIN marsruti ON marsruti_ID=ID 
+// JOIN pilsetas AS p ON no_pilsetas_ID=p.ID
+// JOIN valstis AS v ON no_pilsetas_valstis_ID=v.ID
+
     public function showAllDriverRoutes() {
 
+        $driverRoutes = $this->getAllDriverRoutes();
+
+        if (is_array($driverRoutes)) {
+
+            foreach ($driverRoutes as $driverRoute) {
+
+                echo '<hr>';
+                echo '<a class="route" href="route.php?ID='.$driverRoute['ID'].'">';
+                echo ' '.$driverRoute['valsts_no'].' ';
+            }
+
+        }
 
     }
 
