@@ -28,31 +28,38 @@
 
                         if (isset($_SESSION['u_ID'])) {
 
-                            echo '<form action="process/loggingOut.php" method="POST">
-                                    <div class="form-group">
-                                        <button type="submit" name="submit">Izlogoties</button>
-                                    </div>
-                                </form>';
+                            echo '
+                                <div class="row">
+
+                                    <form action="process/loggingOut.php" method="POST">
+                                        <div class="form-group">
+                                            <button type="submit" name="submit">Izlogoties</button>
+                                        </div>
+                                    </form>
+                                </div>';
                         }
 
                         else {
 
-                            echo '<form action="process/loggingIn.php" method="POST">
-                                    <div class="form-group">
-                                        <input type="text" name="userORemail" placeholder="Lietotājvārds/epasts*">
-                                        <input type="password" name="password" placeholder="Parole*">
-                                        <button type="submit" name="submit">Pieslēgties</button>
-                                    </div>
-                                </form>
+                            echo '
+                                <div class="row">
+                                    <form action="process/loggingIn.php" method="POST">
+                                        <div class="form-group">
+                                            <input type="text" name="userORemail" placeholder="Lietotājvārds/epasts*">
+                                            <input type="password" name="password" placeholder="Parole*">
+                                            <button type="submit" name="submit">Pieslēgties</button>
+                                        </div>
+                                    </form>
 
-                                <div class="form-group">
-                                    <a class="float-right" href="register.php">Reģistrēties</a>
+                                    <div class="form-group">
+                                        <a class="float-right" href="register.php">Reģistrēties</a>
+                                    </div>
                                 </div>';
-                            }
+                        }
                     ?>
 
                 </div>
-            </a>
+            </a>  
         </nav>
 
     </header>

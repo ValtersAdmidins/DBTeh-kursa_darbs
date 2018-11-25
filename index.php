@@ -15,13 +15,7 @@
 
                     echo '<h1 style="text-align: center;">Pieslēdzies kā pasažieris.</h1>';
                     echo '<a href="newPassengerRoute.php">Izveidot jaunu pasažiera maršrutu</a><br>';
-
-                    echo("{$_SESSION['u_ID']}"."<br />");
-                    echo("{$_SESSION['u_first']}"."<br />");
-                    echo("{$_SESSION['u_last']}"."<br />");
-                    echo("{$_SESSION['u_email']}"."<br />");
-                    echo("{$_SESSION['u_username']}"."<br />");
-                    echo("{$_SESSION['u_role']}"."<br />");
+                    echo '<a href="myRoutes.php">Skatīt manus maršrutus</a><br>';
 
                     echo '<h1 style="text-align: center;">↓ Visi šoferu maršruti. ↓</h1>';
 
@@ -31,15 +25,14 @@
 
                 else if (isset($_SESSION['u_ID']) && $_SESSION['u_role'] == 2) {
                     
-                    echo '<h1>Pieslēdzies kā šoferis.</h1>';
+                    echo '<h1 style="text-align: center;">Pieslēdzies kā šoferis.</h1>';
                     echo '<a href="newDriverRoute.php">Izveidot jaunu šofera maršrutu</a><br>';
+                    echo '<a href="myRoutes.php">Skatīt manus maršrutus</a><br>';
+                    
+                    echo '<h1 style="text-align: center;">↓ Visi pasažieru maršruti. ↓</h1>';
 
-                    echo("{$_SESSION['u_ID']}"."<br />");
-                    echo("{$_SESSION['u_first']}"."<br />");
-                    echo("{$_SESSION['u_last']}"."<br />");
-                    echo("{$_SESSION['u_email']}"."<br />");
-                    echo("{$_SESSION['u_username']}"."<br />");
-                    echo("{$_SESSION['u_role']}"."<br />");
+                    $passengerRoutes = new Routes();
+                    $passengerRoutes->showAllPassengerRoutes();
                 }
 
                 else if (isset($_SESSION['u_ID']) && $_SESSION['u_role'] == 3) {
