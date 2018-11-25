@@ -1,3 +1,28 @@
+body {
+  background: rgb(225, 225, 225);
+}
+
+.content {
+  max-width: 900px;
+  margin: auto;
+}
+
+.navbar {
+  background: rgb(180, 180, 180);
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+th, td {
+  padding: 8px;
+  text-align: center;
+}
+
+tr:hover {background-color: #c2def5;}
+
 .success-msg-wrapper {
     display: none;
   }
+

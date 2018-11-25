@@ -23,6 +23,8 @@
                     echo("{$_SESSION['u_username']}"."<br />");
                     echo("{$_SESSION['u_role']}"."<br />");
 
+                    echo '<h1 style="text-align: center;">↓ Visi šoferu maršruti. ↓</h1>';
+
                     $driverRoutes = new Routes();
                     $driverRoutes->showAllDriverRoutes();
                 }

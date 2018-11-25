@@ -31,7 +31,14 @@ class Routes extends Database {
 
     protected function getAllDriverRoutes() {
 
-        $sql = "SELECT * FROM visi_soferu_marsruti JOIN marsruti ON marsruti_ID=ID;";
+        $sql = "SELECT marsruti.ID, nv.nosaukums AS no_valsts, np.nosaukums AS no_pilseta, uv.nosaukums AS uz_valsts, up.nosaukums AS uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits
+                FROM visi_soferu_marsruti
+                JOIN marsruti ON marsruti_ID=ID
+                JOIN valstis AS nv ON no_pilsetas_valstis_ID=nv.ID
+                JOIN pilsetas AS np ON no_pilsetas_ID=np.ID
+                JOIN valstis AS uv ON uz_pilsetas_valstis_ID=uv.ID
+                JOIN pilsetas AS up ON uz_pilsetas_ID=up.ID;";
+
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -47,11 +54,6 @@ class Routes extends Database {
 
     }
 
-    // SELECT * FROM visi_soferu_marsruti 
-// JOIN marsruti ON marsruti_ID=ID 
-// JOIN pilsetas AS p ON no_pilsetas_ID=p.ID
-// JOIN valstis AS v ON no_pilsetas_valstis_ID=v.ID
-
     public function showAllDriverRoutes() {
 
         $driverRoutes = $this->getAllDriverRoutes();
@@ -60,9 +62,33 @@ class Routes extends Database {
 
             foreach ($driverRoutes as $driverRoute) {
 
-                echo '<hr>';
-                echo '<a class="route" href="route.php?ID='.$driverRoute['ID'].'">';
-                echo ' '.$driverRoute['valsts_no'].' ';
+                echo '<hr>
+                      <table style="width:100%">
+                        <tr>
+                            <th></th>
+                            <th>No valstis</th>
+                            <th>No pilsetas</th>
+                            <th>Uz valsti</th>
+                            <th>Uz pilsetu</th>
+                            <th>No adreses</th>
+                            <th>Uz adresi</th>
+                            <th>Izbraukšanas laiks</th>
+                            <th>Piedavātā cena</th>
+                            <th>Pieejamās sēdvietas</th>
+                        </tr>
+                        <tr>
+                            <td><a class="route" href="route.php?ID='.$driverRoute['ID'].'">Izvēlēties</a></td>
+                            <td>' .$driverRoute['no_valsts']. '</td>
+                            <td>' .$driverRoute['no_pilseta']. '</td>
+                            <td>' .$driverRoute['uz_valsts']. '</td>
+                            <td>' .$driverRoute['uz_pilseta']. '</td>
+                            <td>' .$driverRoute['no_adrese']. '</td>
+                            <td>' .$driverRoute['uz_adrese']. '</td>
+                            <td>' .$driverRoute['izbrauksanas_laiks']. '</td>
+                            <td>' .$driverRoute['cena']. '</td>
+                            <td>' .$driverRoute['sedvietas']. '</td>
+                        </tr>
+                      </table>';
             }
 
         }

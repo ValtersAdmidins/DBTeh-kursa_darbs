@@ -13,11 +13,13 @@
 </head>
 <body>
 
+<div class="content">
+
     <header>
 
         my header
 
-        <nav class="navbar navbar-light bg-light">
+        <nav class="navbar navbar-light">
             <a class="navbar-brand" href="index.php">Home</a>
                 <div class="ml-auto">
 
@@ -54,3 +56,4 @@
         </nav>
 
     </header>
+
