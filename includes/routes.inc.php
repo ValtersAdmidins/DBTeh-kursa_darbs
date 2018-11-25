@@ -75,6 +75,8 @@ class Routes extends Database {
                     <th>Izbraukšanas laiks</th>
                     <th>Piedavātā samaksa</th>
                     <th>Pieejamās sēdvietas</th>
+                    <th></th>
+                    <th></th>
                 </tr>';
 
         if (is_array($myRoutes)) {
@@ -93,8 +95,9 @@ class Routes extends Database {
                             <td>' .$myRoute['izbrauksanas_laiks']. '</td>
                             <td>' .$myRoute['cena']. '</td>
                             <td>' .$myRoute['sedvietas']. '</td>
+                            <td><a class="route" href="editRoute.php?ID='.$myRoute['ID'].'">Rediģēt maršrutu</a></td>
+                            <td><a class="route" href="deleteRoute.php?ID='.$myRoute['ID'].'">Dzēst maršrutu</a></td>
                         </tr>';
-                      
             } 
 
         }
@@ -249,7 +252,7 @@ class Routes extends Database {
 
     }
 
-    protected function getARoute($route_ID) {
+    public function getARoute($route_ID) {
 
         $sql = "SELECT marsruti.ID, nv.nosaukums AS no_valsts, np.nosaukums AS no_pilseta, uv.nosaukums AS uz_valsts, up.nosaukums AS uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits
                 FROM marsruti
@@ -337,6 +340,35 @@ class Routes extends Database {
                 <h2>Telefona numurs: '.$creatorUser['telefona_numurs'].' </h2>';
         }
 
+    }
+
+    public function editARoute($route_ID) {
+
+        $sql = "UPDATE marsruti SET no_pilsetas_valstis_ID='$insert_data[1]', 
+                                    no_pilsetas_ID='$insert_data[2]', 
+                                    uz_pilsetas_valstis_ID='$insert_data[3]', 
+                                    uz_pilsetas_ID='$insert_data[4]', 
+                                    no_adrese='$insert_data[5]', 
+                                    uz_adrese='$insert_data[6]', 
+                                    izbrauksanas_laiks='$insert_data[7]', 
+                                    cena='$insert_data[8]', 
+                                    sedvietas='$insert_data[9]', 
+                                    irIzpildits='$insert_data[10]'
+                                    WHERE ID='$insert_data[0]';";
+
+        $result1 = $this->connect()->query($sql);
+
+        if ($result1) {
+
+            header("Location: ../myRoutes.php?edit=success");
+            exit();
+        }
+
+        else {
+
+            header("Location: ../myRoutes.php?edit=error");
+            exit();
+        }
     }
 
 }

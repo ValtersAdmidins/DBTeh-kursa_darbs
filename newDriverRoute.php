@@ -13,7 +13,7 @@
 
     ?>
 
-    <form id="passengerRoute" action="process/addingNewRoute.php" method="POST">
+    <form id="routeForm" action="process/addingNewRoute.php" method="POST">
 
         <h2 style="text-align: center;">Izveidot jaunu šofera maršrutu</h2>
         <br>

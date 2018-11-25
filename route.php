@@ -10,13 +10,15 @@
         <div>
 
             <?php
+                
+                // TODO: ADD NOT SHOWING ROUTE TO SAME TYPE u_role
 
                 if (isset($_GET['ID']) && isset($_SESSION['u_ID']) && $_SESSION['u_role'] == 1) {
 
                     $route_ID = $_GET['ID'];
 
                     echo '<h1 style="text-align: center;">Pieslēdzies kā pasažieris.</h1>';
-                    echo '<a href="myRoutes.php" >← Atpakaļ</a>';
+                    echo '<a href=" '.$_SERVER['HTTP_REFERER'].' ">← Atpakaļ</a>';
 
                     echo '<h1 style="text-align: center;">↓ Maršruts ↓</h1>';
 
@@ -29,8 +31,8 @@
                     $route_ID = $_GET['ID'];
 
                     echo '<h1 style="text-align: center;">Pieslēdzies kā šoferis.</h1>';
-                    echo '<a href="index.php" >← Atpakaļ</a>';
-
+                    echo '<a href=" '.$_SERVER['HTTP_REFERER'].' ">← Atpakaļ</a>';
+                    
                     echo '<h1 style="text-align: center;">↓ Maršruts ↓</h1>';
 
                     $route = new Routes();
