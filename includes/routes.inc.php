@@ -342,19 +342,19 @@ class Routes extends Database {
 
     }
 
-    public function editARoute($route_ID) {
+    public function editARoute($update_data) {
 
-        $sql = "UPDATE marsruti SET no_pilsetas_valstis_ID='$insert_data[1]', 
-                                    no_pilsetas_ID='$insert_data[2]', 
-                                    uz_pilsetas_valstis_ID='$insert_data[3]', 
-                                    uz_pilsetas_ID='$insert_data[4]', 
-                                    no_adrese='$insert_data[5]', 
-                                    uz_adrese='$insert_data[6]', 
-                                    izbrauksanas_laiks='$insert_data[7]', 
-                                    cena='$insert_data[8]', 
-                                    sedvietas='$insert_data[9]', 
-                                    irIzpildits='$insert_data[10]'
-                                    WHERE ID='$insert_data[0]';";
+        $sql = "UPDATE marsruti SET no_pilsetas_valstis_ID='$update_data[1]', 
+                                    no_pilsetas_ID='$update_data[2]', 
+                                    uz_pilsetas_valstis_ID='$update_data[3]', 
+                                    uz_pilsetas_ID='$update_data[4]', 
+                                    no_adrese='$update_data[5]', 
+                                    uz_adrese='$update_data[6]', 
+                                    izbrauksanas_laiks='$update_data[7]', 
+                                    cena='$update_data[8]', 
+                                    sedvietas='$update_data[9]', 
+                                    irIzpildits='$update_data[10]'
+                                    WHERE ID='$update_data[0]';";
 
         $result1 = $this->connect()->query($sql);
 

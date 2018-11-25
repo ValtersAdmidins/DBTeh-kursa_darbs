@@ -91,25 +91,25 @@
             <label for="address_to">Adresse uz: </label>
             <input type="text" name="address_to" placeholder="Adrese uz" value="<?php echo $address_to ?>">
         </div>
-            
+        
         <div class="form-group">
             <div class="input-group">
                 <label for="departure_time">Izbraukšanas laiks: </label>
-                <input type="datetime-local" name="departure_time" value="<?php echo $departure_time ?>">
+                <input id="datetimepicker" type="text" name="departure_time" value="<?php echo $departure_time ?>" required>
             </div>
         </div>
 
         <div class="form-group">
             <div class="input-group">
                 <label for="price">Piedāvātā samaksa:</label>
-                <input type="number" min="0" name="price" value="<?php echo $price ?>">
+                <input type="number" min="0" name="price" value="<?php echo $price ?>" required>
             </div>
         </div>
 
         <div class="form-group">
             <div class="input-group">
                 <label for="seats">Nepieciešamās sēdvietas: </label>
-                <input type="number" min="1" name="seats" value="<?php echo $seats ?>">
+                <input type="number" min="1" name="seats" value="<?php echo $seats ?>" required>
             </div>
         </div>
 

@@ -62,11 +62,11 @@
             <label for="address_to">Adresse uz: </label>
             <input type="text" name="address_to" placeholder="Adrese uz">
         </div>
-            
+
         <div class="form-group">
             <div class="input-group">
                 <label for="departure_time">Izbraukšanas laiks: </label>
-                <input type="datetime-local" name="departure_time">
+                <input id="datetimepicker" type="text" name="departure_time" required>
             </div>
         </div>
 
