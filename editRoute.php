@@ -17,16 +17,25 @@
             $row = $route->getARoute($route_ID);
 
             $ID = $row['ID'];
+
+            $country_from = $route->getNameOfCountryByID($row['no_valsts']);
+            $city_from = $route->getNameOfCityByID($row['no_pilseta']);
+            $country_to = $route->getNameOfCountryByID($row['uz_valsts']);
+            $city_to = $route->getNameOfCityByID($row['uz_pilseta']); 
+
             $country_from_name = $row['no_valsts'];
             $city_from_name = $row['no_pilseta'];
             $country_to_name = $row['uz_valsts'];
-            $city_to_name = $row['uz_pilseta'];
+            $city_to_name = $row['uz_pilseta']; 
+
             $address_from = $row['no_adrese'];
             $address_to = $row['uz_adrese'];
             $departure_time = $row['izbrauksanas_laiks'];
             $price = $row['cena'];
             $seats = $row['sedvietas'];
             $isCompleted = $row['irIzpildits'];
+
+               
     ?>
 
     <form id="routeForm" action="process/editingRoute.php" method="POST">
@@ -49,6 +58,7 @@
         <div class="form-group">
             <label for="country_from">Valsts no: </label>
             <select id="country_from" name="country_from" required>
+                <option value="<?php echo $country_from ?>" hidden selected> <?php echo $country_from_name ?> </option>
                 <?php
 
                     $countries = new Location();
@@ -59,6 +69,7 @@
 
             <label for="city_from">Pilsēta no: </label>
             <select id="city_from" name="city_from" required>
+                <option value="<?php echo $city_from ?>" hidden selected> <?php echo $city_from_name ?> </option>
                 <!-- ajax html option here [js/locationSelection.js] -->
             </select>
         </div>
@@ -66,6 +77,7 @@
         <div class="form-group">
             <label for="country_to">Valsts uz: </label>
             <select id="country_to" name="country_to" required>
+                <option value="<?php echo $country_to ?>" hidden selected> <?php echo $country_to_name ?> </option>
                 <?php
 
                     $countries = new Location();
@@ -76,6 +88,7 @@
 
             <label for="city_to">Pilsēta uz: </label>
             <select id="city_to" name="city_to" required>
+                <option value="<?php echo $city_to ?>" hidden selected> <?php echo $city_to_name ?> </option>
                 <!-- ajax html option here [js/locationSelection.js] -->
             </select>
         </div>

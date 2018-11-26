@@ -45,7 +45,7 @@ class Routes extends Database {
         }
     }
 
-    protected function getNameOfCountryByID($country_ID) {
+    public function getNameOfCountryByID($country_ID) {
 
         $sql = "SELECT nosaukums FROM valstis WHERE ID='$country_ID'";
         $result = $this->connect()->query($sql);
@@ -58,7 +58,7 @@ class Routes extends Database {
         }
     }
 
-    protected function getNameOfCityByID($city_ID) {
+    public function getNameOfCityByID($city_ID) {
 
         $sql = "SELECT nosaukums FROM pilsetas WHERE ID='$city_ID'";
         $result = $this->connect()->query($sql);
@@ -159,7 +159,7 @@ class Routes extends Database {
                             <td>' .$myRoute['cena']. '</td>
                             <td>' .$myRoute['sedvietas']. '</td>
                             <td><a class="route" href="editRoute.php?ID='.$myRoute['ID'].'">Rediģēt maršrutu</a></td>
-                            <td><a class="route" href="deleteRoute.php?ID='.$myRoute['ID'].'">Dzēst maršrutu</a></td>
+                            <td><a class="route" href="process/deletingRoute.php?ID='.$myRoute['ID'].'">Dzēst maršrutu</a></td>
                         </tr>';
             } 
 
@@ -423,9 +423,9 @@ class Routes extends Database {
                                     irIzpildits='$update_data[10]'
                                     WHERE ID='$update_data[0]';";
 
-        $result1 = $this->connect()->query($sql);
+        $result = $this->connect()->query($sql);
 
-        if ($result1) {
+        if ($result) {
 
             header("Location: ../myRoutes.php?edit=success");
             exit();
@@ -434,6 +434,24 @@ class Routes extends Database {
         else {
 
             header("Location: ../myRoutes.php?edit=error");
+            exit();
+        }
+    }
+
+    public function deleteARoute($route_ID) {
+
+        $sql = "DELETE FROM marsruti WHERE ID='$route_ID'";
+        $result = $this->connect()->query($sql);
+
+        if ($result) {
+
+            header("Location: ../myRoutes.php?delete=success");
+            exit();
+        }
+
+        else {
+
+            header("Location: ../myRoutes.php?delete=error");
             exit();
         }
     }

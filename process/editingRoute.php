@@ -2,7 +2,7 @@
 
     session_start();
 
-    if (isset($_POST['submit'])) {
+    if (isset($_POST['submit']) && isset($_SESSION['u_ID'])) {
 
         include '../includes/database.inc.php';
         include '../includes/routes.inc.php';
