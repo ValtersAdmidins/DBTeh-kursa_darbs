@@ -6,11 +6,27 @@ class Routes extends Database {
 
         $conn = $this->connect();
 
-        $sql = "INSERT INTO marsruti (no_pilsetas_valstis_ID, no_pilsetas_ID, uz_pilsetas_valstis_ID, uz_pilsetas_ID, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits)
-                VALUES ('$insert_data[1]', '$insert_data[2]', '$insert_data[3]', '$insert_data[4]', '$insert_data[5]', '$insert_data[6]', '$insert_data[7]', '$insert_data[8]', '$insert_data[9]', 0);";
+        $country_from = $this->getNameOfCountryByID($insert_data[1]);
+        $city_from = $this->getNameOfCityByID($insert_data[2]);
+        $country_to = $this->getNameOfCountryByID($insert_data[3]);
+        $city_to = $this->getNameOfCityByID($insert_data[4]);
+
+        if (is_array($country_from) && 
+            is_array($city_from) &&
+            is_array($country_to) &&
+            is_array($city_to)) {
+                
+            $country_from_name = $country_from['nosaukums'];
+            $city_from_name = $city_from['nosaukums'];
+            $country_to_name = $country_to['nosaukums'];
+            $city_to_name = $city_to['nosaukums'];
+        }
+
+        $sql = "INSERT INTO marsruti (no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits)
+                VALUES ('$country_from_name', '$city_from_name', '$country_to_name', '$city_to_name', '$insert_data[5]', '$insert_data[6]', '$insert_data[7]', '$insert_data[8]', '$insert_data[9]', 0);";
         $result1 = $conn->query($sql);
 
-        $route_ID = $conn->insert_id;
+        $route_ID = $conn->insert_id; // Required to get the ID of the last insert
 
         $sql = "INSERT INTO lietotajiem_ir_marsruti (lietotaji_ID, marsruti_ID)
                 VALUES ('$insert_data[0]', '$route_ID');";
@@ -29,18 +45,65 @@ class Routes extends Database {
         }
     }
 
+    protected function getNameOfCountryByID($country_ID) {
+
+        $sql = "SELECT nosaukums FROM valstis WHERE ID='$country_ID'";
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+            
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+    }
+
+    protected function getNameOfCityByID($city_ID) {
+
+        $sql = "SELECT nosaukums FROM pilsetas WHERE ID='$city_ID'";
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+            
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+    }
+
+    public function getIDOfCountryByName($country_name) {
+
+        $sql = "SELECT ID FROM valstis WHERE nosaukums='$country_name'";
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+            
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+    }
+
+    public function getIDOfCityByName($city_name) {
+
+        $sql = "SELECT ID FROM pilsetas WHERE nosaukums='$city_name'";
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+            
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+    }
+
     protected function getAllMyRoutes() {
 
-        $userID = $_SESSION['u_ID'];
-        $sql = "SELECT marsruti.ID, nv.nosaukums AS no_valsts, np.nosaukums AS no_pilseta, uv.nosaukums AS uz_valsts, up.nosaukums AS uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits
-                FROM lietotajiem_ir_marsruti
-                JOIN marsruti ON marsruti_ID=ID
-                JOIN valstis AS nv ON no_pilsetas_valstis_ID=nv.ID
-                JOIN pilsetas AS np ON no_pilsetas_ID=np.ID
-                JOIN valstis AS uv ON uz_pilsetas_valstis_ID=uv.ID
-                JOIN pilsetas AS up ON uz_pilsetas_ID=up.ID
-                WHERE lietotaji_ID='$userID'
-                ORDER BY marsruti.ID DESC";
+        $user_ID = $_SESSION['u_ID'];
+        $sql = "SELECT marsruti.ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
+                JOIN lietotajiem_ir_marsruti ON marsruti_ID=ID
+                WHERE lietotaji_ID='$user_ID'
+                ORDER BY ID DESC;";
 
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
@@ -108,14 +171,9 @@ class Routes extends Database {
 
     protected function getAllPassengerRoutes() {
 
-        $sql = "SELECT marsruti.ID, nv.nosaukums AS no_valsts, np.nosaukums AS no_pilseta, uv.nosaukums AS uz_valsts, up.nosaukums AS uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits
-                FROM visi_pasazieru_marsruti
-                JOIN marsruti ON marsruti_ID=ID
-                JOIN valstis AS nv ON no_pilsetas_valstis_ID=nv.ID
-                JOIN pilsetas AS np ON no_pilsetas_ID=np.ID
-                JOIN valstis AS uv ON uz_pilsetas_valstis_ID=uv.ID
-                JOIN pilsetas AS up ON uz_pilsetas_ID=up.ID
-                ORDER BY marsruti.ID DESC;";
+        $sql = "SELECT marsruti.ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
+                JOIN visi_pasazieru_marsruti ON marsruti_ID=marsruti.ID
+                ORDER BY ID DESC;";
 
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
@@ -181,14 +239,9 @@ class Routes extends Database {
 
     protected function getAllDriverRoutes() {
 
-        $sql = "SELECT marsruti.ID, nv.nosaukums AS no_valsts, np.nosaukums AS no_pilseta, uv.nosaukums AS uz_valsts, up.nosaukums AS uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits
-                FROM visi_soferu_marsruti
-                JOIN marsruti ON marsruti_ID=ID
-                JOIN valstis AS nv ON no_pilsetas_valstis_ID=nv.ID
-                JOIN pilsetas AS np ON no_pilsetas_ID=np.ID
-                JOIN valstis AS uv ON uz_pilsetas_valstis_ID=uv.ID
-                JOIN pilsetas AS up ON uz_pilsetas_ID=up.ID
-                ORDER BY marsruti.ID DESC;";
+        $sql = "SELECT marsruti.ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
+                JOIN visi_soferu_marsruti ON marsruti_ID=marsruti.ID
+                ORDER BY ID DESC;";
 
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
@@ -254,13 +307,9 @@ class Routes extends Database {
 
     public function getARoute($route_ID) {
 
-        $sql = "SELECT marsruti.ID, nv.nosaukums AS no_valsts, np.nosaukums AS no_pilseta, uv.nosaukums AS uz_valsts, up.nosaukums AS uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits
+        $sql = "SELECT ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits
                 FROM marsruti
-                JOIN valstis AS nv ON no_pilsetas_valstis_ID=nv.ID
-                JOIN pilsetas AS np ON no_pilsetas_ID=np.ID
-                JOIN valstis AS uv ON uz_pilsetas_valstis_ID=uv.ID
-                JOIN pilsetas AS up ON uz_pilsetas_ID=up.ID
-                WHERE marsruti.ID='$route_ID';";
+                WHERE ID='$route_ID';";
 
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
@@ -344,10 +393,28 @@ class Routes extends Database {
 
     public function editARoute($update_data) {
 
-        $sql = "UPDATE marsruti SET no_pilsetas_valstis_ID='$update_data[1]', 
-                                    no_pilsetas_ID='$update_data[2]', 
-                                    uz_pilsetas_valstis_ID='$update_data[3]', 
-                                    uz_pilsetas_ID='$update_data[4]', 
+        $country_from = $this->getNameOfCountryByID($update_data[1]);
+        $city_from = $this->getNameOfCityByID($update_data[2]);
+        $country_to = $this->getNameOfCountryByID($update_data[3]);
+        $city_to = $this->getNameOfCityByID($update_data[4]);
+
+        if (is_array($country_from) &&
+            is_array($city_from) &&
+            is_array($country_to) &&
+            is_array($city_to)) {
+                
+            $country_from_name = $country_from['nosaukums'];
+            $city_from_name = $city_from['nosaukums'];
+            $country_to_name = $country_to['nosaukums'];
+            $city_to_name = $city_to['nosaukums'];
+        }
+
+        echo $country_from_name;
+
+        $sql = "UPDATE marsruti SET no_valsts='$country_from_name', 
+                                    no_pilseta='$city_from_name', 
+                                    uz_valsts='$country_to_name', 
+                                    uz_pilseta='$city_to_name',
                                     no_adrese='$update_data[5]', 
                                     uz_adrese='$update_data[6]', 
                                     izbrauksanas_laiks='$update_data[7]', 

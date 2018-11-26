@@ -17,10 +17,10 @@
             $row = $route->getARoute($route_ID);
 
             $ID = $row['ID'];
-            $country_from = $row['no_valsts'];
-            $city_from = $row['no_pilseta'];
-            $country_to = $row['uz_valsts'];
-            $city_to = $row['uz_pilseta'];
+            $country_from_name = $row['no_valsts'];
+            $city_from_name = $row['no_pilseta'];
+            $country_to_name = $row['uz_valsts'];
+            $city_to_name = $row['uz_pilseta'];
             $address_from = $row['no_adrese'];
             $address_to = $row['uz_adrese'];
             $departure_time = $row['izbrauksanas_laiks'];
@@ -49,7 +49,6 @@
         <div class="form-group">
             <label for="country_from">Valsts no: </label>
             <select id="country_from" name="country_from" required>
-                <option value="<?php echo $country_from ?>" selected disabled hidden> <?php echo $country_from ?> </option>
                 <?php
 
                     $countries = new Location();
@@ -60,7 +59,6 @@
 
             <label for="city_from">Pilsēta no: </label>
             <select id="city_from" name="city_from" required>
-                <option value="<?php echo $city_from ?>" selected disabled hidden> <?php echo $city_from ?> </option>
                 <!-- ajax html option here [js/locationSelection.js] -->
             </select>
         </div>
@@ -68,7 +66,6 @@
         <div class="form-group">
             <label for="country_to">Valsts uz: </label>
             <select id="country_to" name="country_to" required>
-                <option value="<?php echo $country_to ?>" selected disabled hidden> <?php echo $country_to ?> </option>
                 <?php
 
                     $countries = new Location();
@@ -79,7 +76,6 @@
 
             <label for="city_to">Pilsēta uz: </label>
             <select id="city_to" name="city_to" required>
-                <option value="<?php echo $city_to ?>" selected disabled hidden> <?php echo $city_to ?> </option>
                 <!-- ajax html option here [js/locationSelection.js] -->
             </select>
         </div>
