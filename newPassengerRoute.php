@@ -19,10 +19,6 @@
         <form id="routeForm" action="process/addingNewRoute.php" method="POST">
 
             <div class="form-group">
-                <input id="vehicle" name="vehicle" hidden>
-            </div>
-
-            <div class="form-group">
                 <div class="form-inline">
                     <label for="country_from">Valsts no: </label>
                     <select id="country_from" class="form-control col" name="country_from" required>

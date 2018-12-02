@@ -41,9 +41,6 @@
                           <div class="col p-0 my-1">
                             <a class="btn btn-primary" href="newDriverVehicle.php">Pievienot transportlīdzēkli</a>
                           </div>';
-                    echo '<h1 style="text-align: center;">↓ Mani maršruti. ↓</h1>';
-                    $myRoutes = new Routes();
-                    $myRoutes->showAllMyRoutes();
 
                 } else {
                     echo '<div class="col p-0">
@@ -54,6 +51,10 @@
                             <a class="btn btn-primary" href="newDriverVehicle.php">Pievienot transportlīdzēkli</a>
                           </div>';
                 }
+                echo '<h1 style="text-align: center;">↓ Mani maršruti. ↓</h1>';
+                $myRoutes = new Routes();
+                $myRoutes->showAllMyRoutes();
+                
                 echo '<h1 style="text-align: center;">↓ Visi pasažieru maršruti. ↓</h1>';
                 $passengerRoutes = new Routes();
                 $passengerRoutes->showAllPassengerRoutes();

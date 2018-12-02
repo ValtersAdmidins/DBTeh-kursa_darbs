@@ -129,7 +129,7 @@
                 <input type="number" min="1" class="form-control col" name="seats" value="<?php echo $seats ?>" required>
             </div>
 
-            <button class="btn btn-primary" type="submit" name="submit">Izveidot maršrutu!</button>
+            <button class="btn btn-primary" type="submit" name="submit">Rediģēt maršrutu!</button>
         </form>
     </div> 
     <?php
