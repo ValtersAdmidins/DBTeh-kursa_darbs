@@ -14,7 +14,7 @@
                 if (isset($_SESSION['u_ID'])) {
 
                     echo '<h1 style="text-align: center;">Pieslēdzies kā pasažieris.</h1>';
-                    echo '<a href="index.php" >← Atpakaļ</a>';
+                    echo '<a class="btn btn-primary" href="index.php" >← Atpakaļ</a>';
 
                     echo '<h1 style="text-align: center;">↓ Mani maršruti. ↓</h1>';
 

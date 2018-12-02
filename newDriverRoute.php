@@ -13,10 +13,10 @@
 
     ?>
 
+    <h2 style="text-align: center;">Izveidot jaunu šofera maršrutu</h2>
+    
     <form id="routeForm" action="process/addingNewRoute.php" method="POST">
 
-        <h2 style="text-align: center;">Izveidot jaunu šofera maršrutu</h2>
-        <br>
         <div class="form-group">
             <label for="country_from">Valsts no: </label>
             <select id="country_from" name="country_from" required>

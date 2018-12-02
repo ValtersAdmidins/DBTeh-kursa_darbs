@@ -20,49 +20,46 @@
 
     <header>
 
-        my header
-
         <nav class="navbar navbar-light">
             <a class="navbar-brand" href="index.php">Home</a>
-                <div class="ml-auto">
+            <div class="ml-auto">
 
-                    <?php
-                        session_start();
+                <?php
+                    session_start();
 
-                        if (isset($_SESSION['u_ID'])) {
+                    if (isset($_SESSION['u_ID'])) {
 
-                            echo '
-                                <div class="row">
-
-                                    <form action="process/loggingOut.php" method="POST">
-                                        <div class="form-group">
-                                            <button type="submit" name="submit">Izlogoties</button>
-                                        </div>
-                                    </form>
-                                </div>';
-                        }
-
-                        else {
-
-                            echo '
-                                <div class="row">
-                                    <form action="process/loggingIn.php" method="POST">
-                                        <div class="form-group">
-                                            <input type="text" name="userORemail" placeholder="Lietotājvārds/epasts*">
-                                            <input type="password" name="password" placeholder="Parole*">
-                                            <button type="submit" name="submit">Pieslēgties</button>
-                                        </div>
-                                    </form>
-
-                                    <div class="form-group">
-                                        <a class="float-right" href="register.php">Reģistrēties</a>
+                        echo '<form class="form-inline" action="process/loggingOut.php" method="POST">
+                                <div class="form-group">
+                                    <div class="col px-1">
+                                        <button class="btn btn-primary" type="submit" name="submit">Izlogoties</button>
                                     </div>
-                                </div>';
-                        }
-                    ?>
+                                </div>
+                                </form>';
+                    }
 
-                </div>
-            </a>  
+                    else {
+
+                        echo '<form class="form-inline" action="process/loggingIn.php" method="POST">
+                                <div class="form-group">
+                                    <div class="col px-1">
+                                        <input type="text" name="userORemail" placeholder="Lietotājvārds/epasts*">
+                                    </div>
+                                    <div class="col px-1">
+                                        <input type="password" name="password" placeholder="Parole*">
+                                    </div>
+                                    <div class="col px-1">
+                                        <button class="btn btn-primary" type="submit" name="submit">Pieslēgties</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <a class="btn btn-primary float-right" href="register.php">Reģistrēties</a>
+                                </div>
+                                </form>';
+                    }
+                ?>
+
+            </div> 
         </nav>
 
     </header>

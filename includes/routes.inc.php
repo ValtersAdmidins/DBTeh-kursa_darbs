@@ -148,7 +148,7 @@ class Routes extends Database {
 
                     echo '
                         <tr>
-                            <td><a class="route" href="route.php?ID='.$myRoute['ID'].'">Izvēlēties</a></td>
+                            <td><a class="btn btn-primary route" href="route.php?ID='.$myRoute['ID'].'">Izvēlēties</a></td>
                             <td>' .$myRoute['no_valsts']. '</td>
                             <td>' .$myRoute['no_pilseta']. '</td>
                             <td>' .$myRoute['uz_valsts']. '</td>
@@ -158,8 +158,8 @@ class Routes extends Database {
                             <td>' .$myRoute['izbrauksanas_laiks']. '</td>
                             <td>' .$myRoute['cena']. '</td>
                             <td>' .$myRoute['sedvietas']. '</td>
-                            <td><a class="route" href="editRoute.php?ID='.$myRoute['ID'].'">Rediģēt maršrutu</a></td>
-                            <td><a class="route" href="process/deletingRoute.php?ID='.$myRoute['ID'].'">Dzēst maršrutu</a></td>
+                            <td><a class="btn btn-primary route" href="editRoute.php?ID='.$myRoute['ID'].'">Rediģēt maršrutu</a></td>
+                            <td><a class="btn btn-primary route" href="process/deletingRoute.php?ID='.$myRoute['ID'].'">Dzēst maršrutu</a></td>
                         </tr>';
             } 
 
@@ -216,7 +216,7 @@ class Routes extends Database {
 
                     echo '
                         <tr>
-                            <td><a class="route" href="route.php?ID='.$passengerRoute['ID'].'">Izvēlēties</a></td>
+                            <td><a class="btn btn-primary route" href="route.php?ID='.$passengerRoute['ID'].'">Izvēlēties</a></td>
                             <td>' .$passengerRoute['no_valsts']. '</td>
                             <td>' .$passengerRoute['no_pilseta']. '</td>
                             <td>' .$passengerRoute['uz_valsts']. '</td>
@@ -284,7 +284,7 @@ class Routes extends Database {
 
                     echo '
                         <tr>
-                            <td><a class="route" href="route.php?ID='.$driverRoute['ID'].'">Izvēlēties</a></td>
+                            <td><a class="btn btn-primary route" href="route.php?ID='.$driverRoute['ID'].'">Izvēlēties</a></td>
                             <td>' .$driverRoute['no_valsts']. '</td>
                             <td>' .$driverRoute['no_pilseta']. '</td>
                             <td>' .$driverRoute['uz_valsts']. '</td>

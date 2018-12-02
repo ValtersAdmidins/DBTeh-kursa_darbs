@@ -1,7 +1,5 @@
     <footer>
 
-        my footer
-
     </footer>
 
     <!-- JavaScript -->

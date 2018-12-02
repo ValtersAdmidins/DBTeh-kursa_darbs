@@ -1,15 +1,5 @@
 <?php
 
-// $country_from = $route->getIDOfCountryByName($country_from_name);
-// $city_from = $route->getIDOfCityByName($city_from_name);
-// $country_to = $route->getIDOfCountryByName($country_to_name);
-// $city_to = $route->getIDOfCityByName($city_to_name);
-
-// $country_from_ID = $country_from['ID'];
-// $city_from_ID = $city_from['ID'];
-// $country_to_ID = $country_to['ID'];
-// $city_to_ID = $city_to['ID'];
-
 class Location extends Database {
 
     protected function getAllCountries() {

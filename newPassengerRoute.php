@@ -13,10 +13,10 @@
 
     ?>
 
+    <h2 style="text-align: center;">Izveidot jaunu pasažiera maršrutu</h2>
+    
     <form id="routeForm" action="process/addingNewRoute.php" method="POST">
 
-        <h2 style="text-align: center;">Izveidot jaunu pasažiera maršrutu</h2>
-        <br>
         <div class="form-group">
             <label for="country_from">Valsts no: </label>
             <select id="country_from" name="country_from" required>
@@ -84,7 +84,7 @@
             </div>
         </div>
 
-        <button type="submit" name="submit">Izveidot maršrutu!</button>
+        <button class="btn btn-primary" type="submit" name="submit">Izveidot maršrutu!</button>
     </form>
             
     <?php
