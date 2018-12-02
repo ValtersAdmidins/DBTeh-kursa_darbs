@@ -38,93 +38,100 @@
                
     ?>
 
-    <form id="routeForm" action="process/editingRoute.php" method="POST">
+    <h2 style="text-align: center;">Rediģet maršrutu</h2>
 
-        <h2 style="text-align: center;">Izveidot jaunu pasažiera maršrutu</h2>
-        <br>
+    <div class="container">
+        <form id="routeForm" action="process/editingRoute.php" method="POST">
 
-        <div class="form-group">
-            <div class="input-group">
-                <input type="hidden" name="ID" value="<?php echo $ID ?>">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="hidden" name="ID" value="<?php echo $ID ?>">
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="input-group">
-                <input type="hidden" name="isCompleted" value="<?php echo $isCompleted ?>">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="hidden" name="isCompleted" value="<?php echo $isCompleted ?>">
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="country_from">Valsts no: </label>
-            <select id="country_from" name="country_from" required>
-                <option value="<?php echo $country_from ?>" hidden selected> <?php echo $country_from_name ?> </option>
-                <?php
+            <div class="form-group">
+                <div class="form-inline">
+                    <label for="country_from">Valsts no: </label>
+                    <select id="country_from" class="form-control col" name="country_from" required>
+                    <option value="<?php echo $country_from ?>" hidden selected> <?php echo $country_from_name ?> </option>
+                        <?php
 
-                    $countries = new Location();
-                    $countries->showAllCountries();
+                            $countries = new Location();
+                            $countries->showAllCountries();
 
-                ?>
-            </select>
-
-            <label for="city_from">Pilsēta no: </label>
-            <select id="city_from" name="city_from" required>
-                <option value="<?php echo $city_from ?>" hidden selected> <?php echo $city_from_name ?> </option>
-                <!-- ajax html option here [js/locationSelection.js] -->
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label for="country_to">Valsts uz: </label>
-            <select id="country_to" name="country_to" required>
-                <option value="<?php echo $country_to ?>" hidden selected> <?php echo $country_to_name ?> </option>
-                <?php
-
-                    $countries = new Location();
-                    $countries->showAllCountries();
-
-                ?>
-            </select>
-
-            <label for="city_to">Pilsēta uz: </label>
-            <select id="city_to" name="city_to" required>
-                <option value="<?php echo $city_to ?>" hidden selected> <?php echo $city_to_name ?> </option>
-                <!-- ajax html option here [js/locationSelection.js] -->
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="address_from">Adresse no: </label>
-            <input type="text" name="address_from" placeholder="Adrese no" value="<?php echo $address_from ?>">
+                        ?>
+                    </select>
+                    <label for="city_from">Pilsēta no: </label>
+                    <select id="city_from" class="form-control col" name="city_from" required>
+                    <option value="<?php echo $city_from ?>" hidden selected> <?php echo $city_from_name ?> </option>
+                        <!-- ajax html option here [js/locationSelection.js] -->
+                    </select>
+                </div>
+            </div>
             
-            <label for="address_to">Adresse uz: </label>
-            <input type="text" name="address_to" placeholder="Adrese uz" value="<?php echo $address_to ?>">
-        </div>
-        
-        <div class="form-group">
-            <div class="input-group">
+            <div class="form-group">
+                <div class="form-inline">
+                    <label for="country_to">Valsts uz: </label>
+                    <select id="country_to" class="form-control col" name="country_to" required>
+                    <option value="<?php echo $country_to ?>" hidden selected> <?php echo $country_to_name ?> </option>
+                        <?php
+
+                            $countries = new Location();
+                            $countries->showAllCountries();
+
+                        ?>
+                    </select>
+
+                    <label for="city_to">Pilsēta uz: </label>
+                    <select id="city_to" class="form-control col" name="city_to" required>
+                    <option value="<?php echo $city_to ?>" hidden selected> <?php echo $city_to_name ?> </option>
+                        <!-- ajax html option here [js/locationSelection.js] -->
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="form-inline">
+                    <label for="address_from">Adresse no: </label>
+                    <input type="text" maxlength="20" class="form-control col" name="address_from" placeholder="Adrese no" value="<?php echo $address_from ?>">
+                    
+                    <label for="address_to">Adresse uz: </label>
+                    <input type="text" maxlength="20" class="form-control col" name="address_to" placeholder="Adrese uz" value="<?php echo $address_to ?>">
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label for="departure_time">Izbraukšanas laiks: </label>
-                <input id="datetimepicker" type="text" name="departure_time" value="<?php echo $departure_time ?>" required>
+                <input id="datetimepicker" type="text" class="form-control col" name="departure_time" value="<?php echo $departure_time ?>" required>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="input-group">
+            <div class="form-group">
                 <label for="price">Piedāvātā samaksa:</label>
-                <input type="number" min="0" name="price" value="<?php echo $price ?>" required>
+                <input type="number" min="0" class="form-control col" name="price" value="<?php echo $price ?>" required>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="input-group">
-                <label for="seats">Nepieciešamās sēdvietas: </label>
-                <input type="number" min="1" name="seats" value="<?php echo $seats ?>" required>
+            <div class="form-group">
+                <?php
+
+                    if ($_SESSION['u_ID'] == 1) {
+                        echo '<label for="seats">Nepieciešamās sēdvietas: </label>';
+                    } elseif ($_SESSION['u_ID'] == 2) {
+                        echo '<label for="seats">Pieejamās sēdvietas: </label>';
+                    }
+
+                ?>
+                <input type="number" min="1" class="form-control col" name="seats" value="<?php echo $seats ?>" required>
             </div>
-        </div>
 
-        <button type="submit" name="submit">Labot maršrutu!</button>
-    </form>
-            
+            <button class="btn btn-primary" type="submit" name="submit">Izveidot maršrutu!</button>
+        </form>
+    </div> 
     <?php
 
         }

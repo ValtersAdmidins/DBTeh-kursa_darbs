@@ -1,19 +1,14 @@
 body {
   background: rgb(225, 225, 225);
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .content {
-  max-width: 1200px;
+  max-width: 1500px;
   margin: auto;
 }
 
 .navbar {
   background: rgb(180, 180, 180);
-}
-
-table, th, td {
-  border: 1px solid black;
 }
 
 th, td {

@@ -3,6 +3,7 @@
     include_once 'header.php';
     include 'includes/database.inc.php';
     include 'includes/routes.inc.php';
+    include 'includes/vehicle.inc.php';
             
 ?>
     
@@ -15,11 +16,13 @@
                 echo '<h1 style="text-align: center;">Pieslēdzies kā pasažieris.</h1>
                       <div class="col p-0">
                         <a class="btn btn-primary" href="newPassengerRoute.php">Izveidot jaunu pasažiera maršrutu</a>
-                      </div>
-                      <div class="col p-0 my-1">
-                        <a class="btn btn-primary" href="myRoutes.php">Skatīt manus maršrutus</a>
-                      </div>
-                      <h1 style="text-align: center;">↓ Visi šoferu maršruti. ↓</h1>';
+                      </div>';
+
+                echo '<h1 style="text-align: center;">↓ Mani maršruti. ↓</h1>';
+                $myRoutes = new Routes();
+                $myRoutes->showAllMyRoutes();
+
+                echo '<h1 style="text-align: center;">↓ Visi šoferu maršruti. ↓</h1>';
                 $driverRoutes = new Routes();
                 $driverRoutes->showAllDriverRoutes();
             }
@@ -28,6 +31,9 @@
                 
                 echo '<h1 style="text-align: center;">Pieslēdzies kā šoferis.</h1>';
                 
+                $myVehicles = new Vehicles();
+                $myVehicles->checkIfUserHasVehicle($_SESSION['u_ID']);
+
                 if (isset($_SESSION['u_vehicle'])) {
                     echo '<div class="col p-0">
                             <a class="btn btn-primary" href="newDriverRoute.php">Izveidot jaunu šofera maršrutu</a>
@@ -35,6 +41,10 @@
                           <div class="col p-0 my-1">
                             <a class="btn btn-primary" href="newDriverVehicle.php">Pievienot transportlīdzēkli</a>
                           </div>';
+                    echo '<h1 style="text-align: center;">↓ Mani maršruti. ↓</h1>';
+                    $myRoutes = new Routes();
+                    $myRoutes->showAllMyRoutes();
+
                 } else {
                     echo '<div class="col p-0">
                             <a class="btn btn-primary disabled">Izveidot jaunu šofera maršrutu</a>
@@ -44,10 +54,7 @@
                             <a class="btn btn-primary" href="newDriverVehicle.php">Pievienot transportlīdzēkli</a>
                           </div>';
                 }
-                echo '<div class="col p-0 my-1">
-                        <a class="btn btn-primary" href="myRoutes.php">Skatīt manus maršrutus</a>
-                      </div>
-                      <h1 style="text-align: center;">↓ Visi pasažieru maršruti. ↓</h1>';
+                echo '<h1 style="text-align: center;">↓ Visi pasažieru maršruti. ↓</h1>';
                 $passengerRoutes = new Routes();
                 $passengerRoutes->showAllPassengerRoutes();
             }

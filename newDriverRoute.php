@@ -3,6 +3,7 @@
     include_once 'header.php';
     include 'includes/database.inc.php';
     include 'includes/location.inc.php';
+    include 'includes/vehicle.inc.php';
 ?>
 
 <main>
@@ -82,6 +83,19 @@
             <div class="form-group">
                 <label for="seats">Pieejamās sēdvietas: </label>
                 <input type="number" class="form-control" min="1" name="seats">
+            </div>
+
+            <div class="form-group">
+                <label for="vehicle">Izvēlēlieties transportalīdzekli: </label>
+                <select id="vehicle" class="form-control col" name="vehicle" required>
+                    <option value="">Izvēlēlieties transportalīdzekli*</option>
+                    <?php
+
+                        $vehicle = new Vehicles();
+                        $vehicle->showAllMyVehiclesInForm();
+
+                    ?>
+                </select>
             </div>
 
             <button class="btn btn-primary" type="submit" name="submit">Izveidot maršrutu!</button>

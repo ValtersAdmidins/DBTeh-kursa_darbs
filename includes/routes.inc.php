@@ -6,10 +6,10 @@ class Routes extends Database {
 
         $conn = $this->connect();
 
-        $country_from = $this->getNameOfCountryByID($insert_data[1]);
-        $city_from = $this->getNameOfCityByID($insert_data[2]);
-        $country_to = $this->getNameOfCountryByID($insert_data[3]);
-        $city_to = $this->getNameOfCityByID($insert_data[4]);
+        $country_from = $this->getNameOfCountryByID($insert_data[2]);
+        $city_from = $this->getNameOfCityByID($insert_data[3]);
+        $country_to = $this->getNameOfCountryByID($insert_data[4]);
+        $city_to = $this->getNameOfCityByID($insert_data[5]);
 
         if (is_array($country_from) && 
             is_array($city_from) &&
@@ -22,8 +22,8 @@ class Routes extends Database {
             $city_to_name = $city_to['nosaukums'];
         }
 
-        $sql = "INSERT INTO marsruti (no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits)
-                VALUES ('$country_from_name', '$city_from_name', '$country_to_name', '$city_to_name', '$insert_data[5]', '$insert_data[6]', '$insert_data[7]', '$insert_data[8]', '$insert_data[9]', 0);";
+        $sql = "INSERT INTO marsruti (transportlidzekli_ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits)
+                VALUES ('$insert_data[1]', '$country_from_name', '$city_from_name', '$country_to_name', '$city_to_name', '$insert_data[6]', '$insert_data[7]', '$insert_data[8]', '$insert_data[9]', '$insert_data[10]', 0);";
         $result1 = $conn->query($sql);
 
         $route_ID = $conn->insert_id; // Required to get the ID of the last insert
@@ -100,7 +100,7 @@ class Routes extends Database {
     protected function getAllMyRoutes() {
 
         $user_ID = $_SESSION['u_ID'];
-        $sql = "SELECT marsruti.ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
+        $sql = "SELECT marsruti.ID, transportlidzekli_ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
                 JOIN lietotajiem_ir_marsruti ON marsruti_ID=ID
                 WHERE lietotaji_ID='$user_ID'
                 ORDER BY ID DESC;";
@@ -126,28 +126,32 @@ class Routes extends Database {
 
         echo '
             <hr>
-            <table style="width:100%">
-                <tr>
-                    <th></th>
-                    <th>No valstis</th>
-                    <th>No pilsetas</th>
-                    <th>Uz valsti</th>
-                    <th>Uz pilsetu</th>
-                    <th>No adreses</th>
-                    <th>Uz adresi</th>
-                    <th>Izbraukšanas laiks</th>
-                    <th>Piedavātā samaksa</th>
-                    <th>Pieejamās sēdvietas</th>
-                    <th></th>
-                    <th></th>
-                </tr>';
+            <div class="table-responsive">
+                <table class="table" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">No valstis</th>
+                            <th scope="col">No pilsetas</th>
+                            <th scope="col">Uz valsti</th>
+                            <th scope="col">Uz pilsetu</th>
+                            <th scope="col">No adreses</th>
+                            <th scope="col">Uz adresi</th>
+                            <th scope="col">Izbraukšanas laiks</th>
+                            <th scope="col">Piedavātā samaksa</th>
+                            <th scope="col">Pieejamās sēdvietas</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>';
 
         if (is_array($myRoutes)) {
+            
+            echo '<tbody>';
 
             foreach ($myRoutes as $myRoute) {
 
-                    echo '
-                        <tr>
+                    echo '<tr>
                             <td><a class="btn btn-primary route" href="route.php?ID='.$myRoute['ID'].'">Izvēlēties</a></td>
                             <td>' .$myRoute['no_valsts']. '</td>
                             <td>' .$myRoute['no_pilseta']. '</td>
@@ -161,17 +165,18 @@ class Routes extends Database {
                             <td><a class="btn btn-primary route" href="editRoute.php?ID='.$myRoute['ID'].'">Rediģēt maršrutu</a></td>
                             <td><a class="btn btn-primary route" href="process/deletingRoute.php?ID='.$myRoute['ID'].'">Dzēst maršrutu</a></td>
                         </tr>';
-            } 
+            }
 
+            echo '</tbody>';
         }
 
-        echo '
-            </table>';
+        echo '</table>
+            </div>';
     }
 
     protected function getAllPassengerRoutes() {
 
-        $sql = "SELECT marsruti.ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
+        $sql = "SELECT marsruti.ID, transportlidzekli_ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
                 JOIN visi_pasazieru_marsruti ON marsruti_ID=marsruti.ID
                 ORDER BY ID DESC;";
 
@@ -196,26 +201,32 @@ class Routes extends Database {
 
         echo '
             <hr>
-            <table style="width:100%">
-                <tr>
-                    <th></th>
-                    <th>No valstis</th>
-                    <th>No pilsetas</th>
-                    <th>Uz valsti</th>
-                    <th>Uz pilsetu</th>
-                    <th>No adreses</th>
-                    <th>Uz adresi</th>
-                    <th>Izbraukšanas laiks</th>
-                    <th>Piedavātā samaksa</th>
-                    <th>Pieejamās sēdvietas</th>
-                </tr>';
+            <div class="table-responsive">
+                <table class="table" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">No valstis</th>
+                            <th scope="col">No pilsetas</th>
+                            <th scope="col">Uz valsti</th>
+                            <th scope="col">Uz pilsetu</th>
+                            <th scope="col">No adreses</th>
+                            <th scope="col">Uz adresi</th>
+                            <th scope="col">Izbraukšanas laiks</th>
+                            <th scope="col">Piedavātā samaksa</th>
+                            <th scope="col">Pieejamās sēdvietas</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>';
 
         if (is_array($passengerRoutes)) {
+            
+            echo '<tbody>';
 
             foreach ($passengerRoutes as $passengerRoute) {
 
-                    echo '
-                        <tr>
+                    echo '<tr>
                             <td><a class="btn btn-primary route" href="route.php?ID='.$passengerRoute['ID'].'">Izvēlēties</a></td>
                             <td>' .$passengerRoute['no_valsts']. '</td>
                             <td>' .$passengerRoute['no_pilseta']. '</td>
@@ -227,19 +238,18 @@ class Routes extends Database {
                             <td>' .$passengerRoute['cena']. '</td>
                             <td>' .$passengerRoute['sedvietas']. '</td>
                         </tr>';
-                      
-            } 
+            }
 
+            echo '</tbody>';
         }
 
-        echo '
-            </table>';
-
+        echo '</table>
+            </div>';
     }
 
     protected function getAllDriverRoutes() {
 
-        $sql = "SELECT marsruti.ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
+        $sql = "SELECT marsruti.ID, transportlidzekli_ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
                 JOIN visi_soferu_marsruti ON marsruti_ID=marsruti.ID
                 ORDER BY ID DESC;";
 
@@ -264,26 +274,32 @@ class Routes extends Database {
 
         echo '
             <hr>
-            <table style="width:100%">
-                <tr>
-                    <th></th>
-                    <th>No valstis</th>
-                    <th>No pilsetas</th>
-                    <th>Uz valsti</th>
-                    <th>Uz pilsetu</th>
-                    <th>No adreses</th>
-                    <th>Uz adresi</th>
-                    <th>Izbraukšanas laiks</th>
-                    <th>Piedavātā samaksa</th>
-                    <th>Pieejamās sēdvietas</th>
-                </tr>';
+            <div class="table-responsive">
+                <table class="table" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">No valstis</th>
+                            <th scope="col">No pilsetas</th>
+                            <th scope="col">Uz valsti</th>
+                            <th scope="col">Uz pilsetu</th>
+                            <th scope="col">No adreses</th>
+                            <th scope="col">Uz adresi</th>
+                            <th scope="col">Izbraukšanas laiks</th>
+                            <th scope="col">Piedavātā samaksa</th>
+                            <th scope="col">Pieejamās sēdvietas</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>';
 
         if (is_array($driverRoutes)) {
+            
+            echo '<tbody>';
 
             foreach ($driverRoutes as $driverRoute) {
 
-                    echo '
-                        <tr>
+                    echo '<tr>
                             <td><a class="btn btn-primary route" href="route.php?ID='.$driverRoute['ID'].'">Izvēlēties</a></td>
                             <td>' .$driverRoute['no_valsts']. '</td>
                             <td>' .$driverRoute['no_pilseta']. '</td>
@@ -295,19 +311,19 @@ class Routes extends Database {
                             <td>' .$driverRoute['cena']. '</td>
                             <td>' .$driverRoute['sedvietas']. '</td>
                         </tr>';
-                      
-            } 
+            }
 
+            echo '</tbody>';
         }
 
-        echo '
-            </table>';
+        echo '</table>
+            </div>';
 
     }
 
     public function getARoute($route_ID) {
 
-        $sql = "SELECT ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits
+        $sql = "SELECT ID, transportlidzekli_ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits
                 FROM marsruti
                 WHERE ID='$route_ID';";
 
@@ -339,30 +355,52 @@ class Routes extends Database {
 
     }
 
+    protected function getRouteVehicle($vehicle_ID) {
+
+        $sql = "SELECT * FROM transportlidzekli
+                WHERE ID='$vehicle_ID';";
+
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+            
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+    }
+
     public function showARoute($route_ID) {
 
         $route = $this->getARoute($route_ID);
         $creatorUser = $this->getRouteCreatorUser($route_ID);
+        $creatorUsersVehicle = $this->getRouteVehicle($route['transportlidzekli_ID']);
 
         echo '
-            <hr>
-            <table style="width:100%">
-                <tr>
-                    <th>No valstis</th>
-                    <th>No pilsetas</th>
-                    <th>Uz valsti</th>
-                    <th>Uz pilsetu</th>
-                    <th>No adreses</th>
-                    <th>Uz adresi</th>
-                    <th>Izbraukšanas laiks</th>
-                    <th>Piedavātā samaksa</th>
-                    <th>Pieejamās sēdvietas</th>
-                </tr>';
+        <hr>
+        <div class="table-responsive">
+            <table class="table" style="width:100%">
+                <thead>
+                    <tr>
+                        <th scope="col">No valstis</th>
+                        <th scope="col">No pilsetas</th>
+                        <th scope="col">Uz valsti</th>
+                        <th scope="col">Uz pilsetu</th>
+                        <th scope="col">No adreses</th>
+                        <th scope="col">Uz adresi</th>
+                        <th scope="col">Izbraukšanas laiks</th>
+                        <th scope="col">Piedavātā samaksa</th>
+                        <th scope="col">Pieejamās sēdvietas</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>';
 
         if (is_array($route)) {
+            
+            echo '<tbody>';
 
-            echo '
-                <tr>
+            echo '<tr>
                     <td>' .$route['no_valsts']. '</td>
                     <td>' .$route['no_pilseta']. '</td>
                     <td>' .$route['uz_valsts']. '</td>
@@ -373,10 +411,12 @@ class Routes extends Database {
                     <td>' .$route['cena']. '</td>
                     <td>' .$route['sedvietas']. '</td>
                 </tr>';
+
+            echo '</tbody>';
         }
 
-        echo '
-            </table>';
+        echo '</table>
+            </div>';
 
         if (is_array($creatorUser)) {
 
@@ -387,6 +427,16 @@ class Routes extends Database {
                 <h2>Uzvārds: '.$creatorUser['uzvards'].' </h2>
                 <h2>E-pasts: '.$creatorUser['epasts'].' </h2>
                 <h2>Telefona numurs: '.$creatorUser['telefona_numurs'].' </h2>';
+        }
+
+        if (is_array($creatorUsersVehicle)) {
+
+            echo '
+                <hr>
+                <h1>Gads: '.$creatorUsersVehicle['gads'].' </h1>
+                <h2>Krāsa: '.$creatorUsersVehicle['krasa'].' </h2>
+                <h2>Marka: '.$creatorUsersVehicle['marka'].' </h2>
+                <h2>Numurzīme: '.$creatorUsersVehicle['numura_zime'].' </h2>';
         }
 
     }
