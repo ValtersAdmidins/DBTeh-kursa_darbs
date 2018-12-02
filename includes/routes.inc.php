@@ -6,10 +6,10 @@ class Routes extends Database {
 
         $conn = $this->connect();
 
-        $country_from = $this->getNameOfCountryByID($insert_data[1]);
-        $city_from = $this->getNameOfCityByID($insert_data[2]);
-        $country_to = $this->getNameOfCountryByID($insert_data[3]);
-        $city_to = $this->getNameOfCityByID($insert_data[4]);
+        $country_from = $this->getNameOfCountryByID($insert_data[2]);
+        $city_from = $this->getNameOfCityByID($insert_data[3]);
+        $country_to = $this->getNameOfCountryByID($insert_data[4]);
+        $city_to = $this->getNameOfCityByID($insert_data[5]);
 
         if (is_array($country_from) && 
             is_array($city_from) &&
@@ -22,8 +22,8 @@ class Routes extends Database {
             $city_to_name = $city_to['nosaukums'];
         }
 
-        $sql = "INSERT INTO marsruti (no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits)
-                VALUES ('$country_from_name', '$city_from_name', '$country_to_name', '$city_to_name', '$insert_data[5]', '$insert_data[6]', '$insert_data[7]', '$insert_data[8]', '$insert_data[9]', 0);";
+        $sql = "INSERT INTO marsruti (transportlidzekli_ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits)
+                VALUES ('$insert_data[1]', '$country_from_name', '$city_from_name', '$country_to_name', '$city_to_name', '$insert_data[6]', '$insert_data[7]', '$insert_data[8]', '$insert_data[9]', '$insert_data[10]', 0);";
         $result1 = $conn->query($sql);
 
         $route_ID = $conn->insert_id; // Required to get the ID of the last insert
@@ -323,7 +323,7 @@ class Routes extends Database {
 
     public function getARoute($route_ID) {
 
-        $sql = "SELECT ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits
+        $sql = "SELECT ID, transportlidzekli_ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits
                 FROM marsruti
                 WHERE ID='$route_ID';";
 
@@ -355,26 +355,26 @@ class Routes extends Database {
 
     }
 
-    protected function getRouteVehicle($route_ID) {
+    protected function getRouteVehicle($vehicle_ID) {
 
-        // $sql = "SELECT * FROM transportlidzekli
-        //         WHERE marsruti_ID='$route_ID';";
+        $sql = "SELECT * FROM transportlidzekli
+                WHERE ID='$vehicle_ID';";
 
-        // $result = $this->connect()->query($sql);
-        // $numRows = $result->num_rows;
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
 
-        // if ($numRows > 0) {
+        if ($numRows > 0) {
             
-        //     $row = $result->fetch_assoc();
-        //     return $row;
-        // }
+            $row = $result->fetch_assoc();
+            return $row;
+        }
     }
 
     public function showARoute($route_ID) {
 
         $route = $this->getARoute($route_ID);
         $creatorUser = $this->getRouteCreatorUser($route_ID);
-        $creatorUsersVehicle = $this->getRouteVehicle($route_ID);
+        $creatorUserVehicle = $this->getRouteVehicle($route['transportlidzekli_ID']);
 
         echo '
         <hr>
@@ -429,7 +429,7 @@ class Routes extends Database {
                 <h2>Telefona numurs: '.$creatorUser['telefona_numurs'].' </h2>';
         }
 
-        if (is_array($creatorUsersVehicle)) {
+        if (is_array($creatorUserVehicle)) {
 
             echo '
                 <hr>
@@ -437,6 +437,9 @@ class Routes extends Database {
                 <h2>Krāsa: '.$creatorUsersVehicle['krasa'].' </h2>
                 <h2>Marka: '.$creatorUsersVehicle['marka'].' </h2>
                 <h2>Numurzīme: '.$creatorUsersVehicle['numura_zime'].' </h2>';
+        }
+        else {
+            echo 'SSSSSSSSSSSs';
         }
 
     }

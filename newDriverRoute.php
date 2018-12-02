@@ -18,6 +18,19 @@
     
     <div class="container">
         <form id="routeForm" action="process/addingNewRoute.php" method="POST">
+            
+            <div class="form-group">
+                <label for="vehicle">Izvēlēlieties transportalīdzekli: </label>
+                <select id="vehicle_ID" class="form-control col" name="vehicle_ID" required>
+                    <option value="">Izvēlēlieties transportalīdzekli*</option>
+                    <?php
+
+                        $vehicle = new Vehicles();
+                        $vehicle->showAllMyVehiclesInForm();
+
+                    ?>
+                </select>
+            </div>
 
             <div class="form-group">
                 <div class="form-inline">
@@ -83,19 +96,6 @@
             <div class="form-group">
                 <label for="seats">Pieejamās sēdvietas: </label>
                 <input type="number" class="form-control" min="1" name="seats">
-            </div>
-
-            <div class="form-group">
-                <label for="vehicle">Izvēlēlieties transportalīdzekli: </label>
-                <select id="vehicle" class="form-control col" name="vehicle" required>
-                    <option value="">Izvēlēlieties transportalīdzekli*</option>
-                    <?php
-
-                        $vehicle = new Vehicles();
-                        $vehicle->showAllMyVehiclesInForm();
-
-                    ?>
-                </select>
             </div>
 
             <button class="btn btn-primary" type="submit" name="submit">Izveidot maršrutu!</button>
