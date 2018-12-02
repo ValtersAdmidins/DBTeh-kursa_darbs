@@ -4,48 +4,46 @@
 
 <main>
 
-    <div class="form-container">
+    <div class="container">
+    
+        <h1 style="text-align:center">REĢISTRĀCIJA</h1>
 
         <form id="register" action="process/registration.php" method="POST">
             
-            <h1 style="text-align:center">REĢISTRĀCIJA</h1>
+            <div class="form-group">
+                <input type="text" class="form-control" name="first" placeholder="Vārds*" required>
+            </div>
 
-            <fieldset>
-                <input type="text" name="first" placeholder="Vārds*" required>
-            </fieldset>
+            <div class="form-group">
+                <input type="text" class="form-control" name="last" placeholder="Uzvārds*" required>
+            </div>
 
-            <fieldset>
-                <input type="text" name="last" placeholder="Uzvārds*" required>
-            </fieldset>
+            <div class="form-group">
+                <input type="email" class="form-control" name="email" placeholder="Epasts*" required>
+            </div>
 
-            <fieldset>
-                <input type="email" name="email" placeholder="Epasts*" required>
-            </fieldset>
+            <div class="form-group">
+                <input type="text" class="form-control" name="username" placeholder="Lietotājvārds*" required>
+            </div>
 
-            <fieldset>
-                <input type="text" name="username" placeholder="Lietotājvārds*" required>
-            </fieldset>
+            <div class="form-group">
+                <input type="text" class="form-control" name="phone" placeholder="Telefons*" required>
+            </div>
 
-            <fieldset>
-                <input type="text" name="phone" placeholder="Telefons*" required>
-            </fieldset>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="Parole*" required>
+            </div>
 
-            <fieldset>
-                <input type="password" name="password" placeholder="Parole*" required>
-            </fieldset>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password-repeat" placeholder="Parole atkārtoti*" required>
+            </div>
 
-            <fieldset>
-                <input type="password" name="password-repeat" placeholder="Parole atkārtoti*" required>
-            </fieldset>
-
-            <fieldset>
+            <div class="form-group">
                 <input type="radio" name="role" value="pasazieris" checked>Pasažieris
                 <input type="radio" name="role" value="soferis">Šoferis
-            </fieldset>
-            
-            <fieldset>
-                <button class="btn btn-primary" type="submit" name="submit">Sign up</button>
-            </fieldset>
+            </div>
+
+            <button class="btn btn-primary" type="submit" name="submit">Sign up</button>
             
         </form>
 

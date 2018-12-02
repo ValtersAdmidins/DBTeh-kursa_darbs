@@ -50,6 +50,7 @@ class Login extends Database {
                         $_SESSION['u_last'] = $rowUsers['uzvards'];
                         $_SESSION['u_email'] = $rowUsers['epasts'];
                         $_SESSION['u_username'] = $rowUsers['lietotajvards'];
+                        // $_SESSION['u_vehicle'] = $rowVehicles[''];
                         
                         $userID = $rowUsers['ID'];
                         $sql = "SELECT * FROM lietotajiem_ir_lomas WHERE lietotaji_ID='$userID'";

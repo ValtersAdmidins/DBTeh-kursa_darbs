@@ -14,8 +14,7 @@
                 if (isset($_SESSION['u_ID'])) {
 
                     echo '<h1 style="text-align: center;">Pieslēdzies kā pasažieris.</h1>';
-                    echo '<a class="btn btn-primary" href="index.php" >← Atpakaļ</a>';
-
+                    echo '<a class="btn btn-primary" href=" '.$_SERVER['HTTP_REFERER'].' ">← Atpakaļ</a>';
                     echo '<h1 style="text-align: center;">↓ Mani maršruti. ↓</h1>';
 
                     $myRoutes = new Routes();
