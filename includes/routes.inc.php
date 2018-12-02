@@ -355,10 +355,10 @@ class Routes extends Database {
 
     }
 
-    protected function getRouteVehicle($vehicle_ID) {
+    protected function getRouteVehicle($route_ID) {
 
         $sql = "SELECT * FROM transportlidzekli
-                WHERE ID='$vehicle_ID';";
+                WHERE marsruti_ID='$route_ID';";
 
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
@@ -374,7 +374,7 @@ class Routes extends Database {
 
         $route = $this->getARoute($route_ID);
         $creatorUser = $this->getRouteCreatorUser($route_ID);
-        $creatorUsersVehicle = $this->getRouteVehicle($route['transportlidzekli_ID']);
+        $creatorUsersVehicle = $this->getRouteVehicle($route_ID);
 
         echo '
         <hr>

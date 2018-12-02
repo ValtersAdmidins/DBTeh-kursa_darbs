@@ -19,7 +19,7 @@
         $price = $_POST['price'];
         $seats = $_POST['seats'];
 
-        $insert_data = array($user_ID, $vehicle_ID, $country_from, $city_from, $country_to, $city_to, $address_from, $address_to, $departure_time, $price, $seats, $vehicle);
+        $insert_data = array($user_ID, $vehicle_ID, $country_from, $city_from, $country_to, $city_to, $address_from, $address_to, $departure_time, $price, $seats);
 
         $route = new Routes();
         $route->addRoute($insert_data);

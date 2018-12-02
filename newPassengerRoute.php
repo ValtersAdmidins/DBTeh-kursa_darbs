@@ -19,12 +19,7 @@
         <form id="routeForm" action="process/addingNewRoute.php" method="POST">
 
             <div class="form-group">
-                <input type="hidden" name="vehicle">
-            </div>
-
-            <div class="form-group">
-                <div class="input-group">
-                </div>
+                <input id="vehicle" name="vehicle" hidden>
             </div>
 
             <div class="form-group">
