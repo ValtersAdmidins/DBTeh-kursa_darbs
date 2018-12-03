@@ -35,6 +35,25 @@ class Location extends Database {
 
     }
 
+    public function showSelectedCountry($route_ID) {
+
+        $route_ID = $_GET['ID'];
+        $route = new Routes();
+        $row = $this->getARoute($route_ID);
+
+        $country_from = $this->getNameOfCountryByID($row['no_valsts']);
+        $city_from = $this->getNameOfCityByID($row['no_pilseta']);
+        $country_to = $this->getNameOfCountryByID($row['uz_valsts']);
+        $city_to = $this->getNameOfCityByID($row['uz_pilseta']); 
+
+        $country_from_name = $row['no_valsts'];
+        $city_from_name = $row['no_pilseta'];
+        $country_to_name = $row['uz_valsts'];
+        $city_to_name = $row['uz_pilseta']; 
+
+
+    }
+
     protected function getAllCitiesFromCountry($country_ID) {
 
         $sql = "SELECT * FROM pilsetas WHERE valstis_ID='$country_ID';";
