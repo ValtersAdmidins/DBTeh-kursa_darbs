@@ -4,6 +4,7 @@ class Routes extends Database {
 
     public function addRoute($insert_data) {
 
+        print_r($insert_data);
         $conn = $this->connect();
 
         $country_from = $this->getNameOfCountryByID($insert_data[2]);
@@ -32,17 +33,17 @@ class Routes extends Database {
                 VALUES ('$insert_data[0]', '$route_ID');";
         $result2 = $conn->query($sql);
 
-        if ($result1 && $result2) {
+        // if ($result1 && $result2) {
 
-            header("Location: ../index.php?route=success");
-            exit();
-        }
+        //     header("Location: ../index.php?route=success");
+        //     exit();
+        // }
 
-        else {
+        // else {
 
-            header("Location: ../index.php?route=error");
-            exit();
-        }
+        //     header("Location: ../index.php?route=error");
+        //     exit();
+        // }
     }
 
     public function getNameOfCountryByID($country_ID) {
@@ -100,7 +101,7 @@ class Routes extends Database {
     protected function getAllMyRoutes() {
 
         $user_ID = $_SESSION['u_ID'];
-        $sql = "SELECT marsruti.ID, transportlidzekli_ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
+        $sql = "SELECT marsruti.ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
                 JOIN lietotajiem_ir_marsruti ON marsruti_ID=ID
                 WHERE lietotaji_ID='$user_ID'
                 ORDER BY ID DESC;";
@@ -176,7 +177,7 @@ class Routes extends Database {
 
     protected function getAllPassengerRoutes() {
 
-        $sql = "SELECT marsruti.ID, transportlidzekli_ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
+        $sql = "SELECT marsruti.ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
                 JOIN visi_pasazieru_marsruti ON marsruti_ID=marsruti.ID
                 ORDER BY ID DESC;";
 
@@ -249,7 +250,7 @@ class Routes extends Database {
 
     protected function getAllDriverRoutes() {
 
-        $sql = "SELECT marsruti.ID, transportlidzekli_ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
+        $sql = "SELECT marsruti.ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
                 JOIN visi_soferu_marsruti ON marsruti_ID=marsruti.ID
                 ORDER BY ID DESC;";
 

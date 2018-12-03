@@ -8,7 +8,7 @@
         include '../includes/routes.inc.php';
 
         $user_ID = $_SESSION['u_ID'];
-        $vehicle_ID = $_SESSION['vehicle_ID'];
+        $vehicle_ID = $_POST['vehicle_ID'];
         $country_from = $_POST['country_from'];
         $city_from = $_POST['city_from'];
         $country_to = $_POST['country_to'];
