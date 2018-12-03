@@ -137,7 +137,7 @@ class Vehicles extends Database {
             
             foreach ($vehicles as $vehicle) {
                 
-                echo '<option value="'.$vehicle['ID'].'">'.$vehicle['ID'].' '.$vehicle['gads'].' '.$vehicle['krasa'].' '.$vehicle['marka'].' '.$vehicle['numura_zime'].'</option>';
+                echo '<option value="'.$vehicle['ID'].'">'.$vehicle['gads'].' '.$vehicle['krasa'].' '.$vehicle['marka'].' '.$vehicle['numura_zime'].'</option>';
             }
 
         }

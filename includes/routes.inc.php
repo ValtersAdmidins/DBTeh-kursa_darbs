@@ -2,9 +2,51 @@
 
 class Routes extends Database {
 
-    public function addRoute($insert_data) {
+    public function addPassengerRoute($insert_data) {
 
-        print_r($insert_data);
+        $conn = $this->connect();
+
+        $country_from = $this->getNameOfCountryByID($insert_data[1]);
+        $city_from = $this->getNameOfCityByID($insert_data[2]);
+        $country_to = $this->getNameOfCountryByID($insert_data[3]);
+        $city_to = $this->getNameOfCityByID($insert_data[4]);
+
+        if (is_array($country_from) && 
+            is_array($city_from) &&
+            is_array($country_to) &&
+            is_array($city_to)) {
+                
+            $country_from_name = $country_from['nosaukums'];
+            $city_from_name = $city_from['nosaukums'];
+            $country_to_name = $country_to['nosaukums'];
+            $city_to_name = $city_to['nosaukums'];
+        }
+
+        $sql = "INSERT INTO marsruti (no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits)
+                VALUES ('$country_from_name', '$city_from_name', '$country_to_name', '$city_to_name', '$insert_data[5]', '$insert_data[6]', '$insert_data[7]', '$insert_data[8]', '$insert_data[9]', 0);";
+        $result1 = $conn->query($sql);
+
+        $route_ID = $conn->insert_id; // Required to get the ID of the last insert
+
+        $sql = "INSERT INTO lietotajiem_ir_marsruti (lietotaji_ID, marsruti_ID)
+                VALUES ('$insert_data[0]', '$route_ID');";
+        $result2 = $conn->query($sql);
+
+        if ($result1 && $result2) {
+
+            header("Location: ../index.php?route=success");
+            exit();
+        }
+
+        else {
+
+            header("Location: ../index.php?route=error");
+            exit();
+        }
+    }
+
+    public function addDriverRoute($insert_data) {
+
         $conn = $this->connect();
 
         $country_from = $this->getNameOfCountryByID($insert_data[2]);
@@ -33,17 +75,17 @@ class Routes extends Database {
                 VALUES ('$insert_data[0]', '$route_ID');";
         $result2 = $conn->query($sql);
 
-        // if ($result1 && $result2) {
+        if ($result1 && $result2) {
 
-        //     header("Location: ../index.php?route=success");
-        //     exit();
-        // }
+            header("Location: ../index.php?route=success");
+            exit();
+        }
 
-        // else {
+        else {
 
-        //     header("Location: ../index.php?route=error");
-        //     exit();
-        // }
+            header("Location: ../index.php?route=error");
+            exit();
+        }
     }
 
     public function getNameOfCountryByID($country_ID) {
@@ -434,13 +476,10 @@ class Routes extends Database {
 
             echo '
                 <hr>
-                <h1>Gads: '.$creatorUsersVehicle['gads'].' </h1>
-                <h2>Krāsa: '.$creatorUsersVehicle['krasa'].' </h2>
-                <h2>Marka: '.$creatorUsersVehicle['marka'].' </h2>
-                <h2>Numurzīme: '.$creatorUsersVehicle['numura_zime'].' </h2>';
-        }
-        else {
-            echo 'SSSSSSSSSSSs';
+                <h1>Gads: '.$creatorUserVehicle['gads'].' </h1>
+                <h2>Krāsa: '.$creatorUserVehicle['krasa'].' </h2>
+                <h2>Marka: '.$creatorUserVehicle['marka'].' </h2>
+                <h2>Numurzīme: '.$creatorUserVehicle['numura_zime'].' </h2>';
         }
 
     }
