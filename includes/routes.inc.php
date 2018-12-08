@@ -145,10 +145,7 @@ class Routes extends Database {
     protected function getAllMyRoutes() {
 
         $user_ID = $_SESSION['u_ID'];
-        $sql = "SELECT marsruti.ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
-                JOIN lietotajiem_ir_marsruti ON marsruti_ID=ID
-                WHERE lietotaji_ID='$user_ID'
-                ORDER BY irIzpildits, Izbrauksanas_laiks;";
+        $sql = "CALL visiManiMarsruti('$user_ID')";
 
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
@@ -244,21 +241,71 @@ class Routes extends Database {
         echo '</table>
             </div>';
 
-        $this->showPotentialCostSum();
+        echo '<br>';
+        $this->showCostSum();
+        echo '<br>
+              <br>';
     }
 
-    protected function getPotentialCostSum() {
+    protected function getNotCompletedRouteCostSum() {
 
+        $user_ID = $_SESSION['u_ID'];
+        $sql = "CALL manaNeizpilditoMarsrutuKopsumma('$user_ID')";
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+    
+            $row = $result->fetch_assoc();
+            return $row;
+        }
 
     }
 
-    protected function showPotentialCostSum() {
+    protected function getCompletedRouteCostSum() {
 
-        echo '<div class="px-1">
-                <div class="ml-auto">
-                    TEST    
-                </div>
-              </div>';
+        $user_ID = $_SESSION['u_ID'];
+        $sql = "CALL manaIzpilditoMarsrutuKopsumma('$user_ID')";
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+    
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+
+    }
+
+    protected function showCostSum() {
+
+        $costNotCompletedSum = $this->getNotCompletedRouteCostSum();
+        $costCompletedSum = $this->getCompletedRouteCostSum();
+
+        if ($_SESSION['u_ID'] == 1) {
+
+            echo '<div class="float-right pr-3">
+                    <div class="float-right">
+                        Potenciālā samaksa: ' .$costNotCompletedSum['summaNeizpildits']. '
+                    </div>
+                    <br>
+                    <div class="float-right">
+                        Samaksāts: ' .$costCompletedSum['summaIzpildits']. '
+                    </div>
+                </div>';
+
+        } else if ($_SESSION['u_ID'] == 2) {
+
+            echo '<div class="float-right pr-3">
+                    <div class="float-right">
+                        Potenciālā peļņa: ' .$costNotCompletedSum['summaNeizpildits']. '
+                    </div>
+                    <br>
+                    <div class="float-right">
+                        Nopelnīts: ' .$costCompletedSum['summaIzpildits']. '
+                    </div>
+                </div>';
+        }
     }
 
     protected function getAllPassengerRoutes() {
