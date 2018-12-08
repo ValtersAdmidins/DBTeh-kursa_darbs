@@ -148,7 +148,7 @@ class Routes extends Database {
         $sql = "SELECT marsruti.ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
                 JOIN lietotajiem_ir_marsruti ON marsruti_ID=ID
                 WHERE lietotaji_ID='$user_ID'
-                ORDER BY ID DESC;";
+                ORDER BY irIzpildits, Izbrauksanas_laiks;";
 
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
@@ -231,7 +231,8 @@ class Routes extends Database {
                             <td>' .$myRoute['izbrauksanas_laiks']. '</td>
                             <td>' .$myRoute['cena']. '</td>
                             <td>' .$myRoute['sedvietas']. '</td>
-                            <td colspan="3">Maršruts atzīmēts kā izpildīts</td>
+                            <td colspan="2">Maršruts atzīmēts kā izpildīts</td>
+                            <td><a class="btn btn-primary route" href="process/deletingRoute.php?ID='.$myRoute['ID'].'">Dzēst maršrutu</a></td>
                           </tr>';
                 }
                     
@@ -248,7 +249,7 @@ class Routes extends Database {
 
         $sql = "SELECT marsruti.ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
                 JOIN visi_pasazieru_marsruti ON marsruti_ID=marsruti.ID
-                ORDER BY ID DESC;";
+                ORDER BY irIzpildits, Izbrauksanas_laiks;";
 
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
@@ -285,6 +286,7 @@ class Routes extends Database {
                             <th scope="col">Izbraukšanas laiks</th>
                             <th scope="col">Piedavātā samaksa</th>
                             <th scope="col">Nepieciešamās sēdvietas</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>';
 
@@ -294,6 +296,7 @@ class Routes extends Database {
 
             foreach ($passengerRoutes as $passengerRoute) {
 
+                if ($passengerRoute['irIzpildits'] == 0) {
                     echo '<tr>
                             <td><a class="btn btn-primary route" href="route.php?ID='.$passengerRoute['ID'].'">Izvēlēties</a></td>
                             <td>' .$passengerRoute['no_valsts']. '</td>
@@ -305,7 +308,24 @@ class Routes extends Database {
                             <td>' .$passengerRoute['izbrauksanas_laiks']. '</td>
                             <td>' .$passengerRoute['cena']. '</td>
                             <td>' .$passengerRoute['sedvietas']. '</td>
+                            <td></td>
                         </tr>';
+                } else if ($passengerRoute['irIzpildits'] == 1) {
+                    echo '<tr class="routeCompleted">
+                            <td><a class="btn btn-primary route" href="route.php?ID='.$passengerRoute['ID'].'">Izvēlēties</a></td>
+                            <td>' .$passengerRoute['no_valsts']. '</td>
+                            <td>' .$passengerRoute['no_pilseta']. '</td>
+                            <td>' .$passengerRoute['uz_valsts']. '</td>
+                            <td>' .$passengerRoute['uz_pilseta']. '</td>
+                            <td>' .$passengerRoute['no_adrese']. '</td>
+                            <td>' .$passengerRoute['uz_adrese']. '</td>
+                            <td>' .$passengerRoute['izbrauksanas_laiks']. '</td>
+                            <td>' .$passengerRoute['cena']. '</td>
+                            <td>' .$passengerRoute['sedvietas']. '</td>
+                            <td>Maršruts atzīmēts kā izpildīts</td>
+                        </tr>';
+                }
+                    
             }
 
             echo '</tbody>';
@@ -320,7 +340,7 @@ class Routes extends Database {
 
         $sql = "SELECT marsruti.ID, no_valsts, no_pilseta, uz_valsts, uz_pilseta, no_adrese, uz_adrese, izbrauksanas_laiks, cena, sedvietas, irIzpildits FROM marsruti
                 JOIN visi_soferu_marsruti ON marsruti_ID=marsruti.ID
-                ORDER BY ID DESC;";
+                ORDER BY irIzpildits, Izbrauksanas_laiks;";
 
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
@@ -366,6 +386,7 @@ class Routes extends Database {
 
             foreach ($driverRoutes as $driverRoute) {
 
+                if ($driverRoute['irIzpildits'] == 0) {
                     echo '<tr>
                             <td><a class="btn btn-primary route" href="route.php?ID='.$driverRoute['ID'].'">Izvēlēties</a></td>
                             <td>' .$driverRoute['no_valsts']. '</td>
@@ -377,7 +398,23 @@ class Routes extends Database {
                             <td>' .$driverRoute['izbrauksanas_laiks']. '</td>
                             <td>' .$driverRoute['cena']. '</td>
                             <td>' .$driverRoute['sedvietas']. '</td>
+                            <td></td>
                         </tr>';
+                } else if ($driverRoute['irIzpildits'] == 1) {
+                    echo '<tr class="routeCompleted">
+                            <td><a class="btn btn-primary route" href="route.php?ID='.$driverRoute['ID'].'">Izvēlēties</a></td>
+                            <td>' .$driverRoute['no_valsts']. '</td>
+                            <td>' .$driverRoute['no_pilseta']. '</td>
+                            <td>' .$driverRoute['uz_valsts']. '</td>
+                            <td>' .$driverRoute['uz_pilseta']. '</td>
+                            <td>' .$driverRoute['no_adrese']. '</td>
+                            <td>' .$driverRoute['uz_adrese']. '</td>
+                            <td>' .$driverRoute['izbrauksanas_laiks']. '</td>
+                            <td>' .$driverRoute['cena']. '</td>
+                            <td>' .$driverRoute['sedvietas']. '</td>
+                            <td>Maršruts atzīmēts kā izpildīts</td>
+                        </tr>';
+                }
             }
 
             echo '</tbody>';
