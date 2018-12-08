@@ -90,7 +90,7 @@
 
             <div class="form-group">
                 <label for="price">Piedāvātā samaksa:</label>
-                <input type="number" class="form-control" min="0" name="price">
+                <input type="number" class="form-control" min="0" step=".01" name="price">
             </div>
 
             <div class="form-group">

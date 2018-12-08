@@ -1,6 +1,6 @@
 <!--    KURSA DARBS DBTeh_2018    -->
 <!--    VALTERS ĀDMĪDIŅŠ 3ITB     -->
-<!--        17.11.2018            -->
+<!--        14.12.2018            -->
 <!DOCTYPE html>
 <html>
 <head>

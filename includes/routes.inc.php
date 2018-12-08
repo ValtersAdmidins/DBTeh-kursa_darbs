@@ -221,7 +221,7 @@ class Routes extends Database {
                           </tr>';
                 } else if ($myRoute['irIzpildits'] == 1) {
                     echo '<tr class="routeCompleted">
-                            <td><a class="btn btn-primary route" href="route.php?ID='.$myRoute['ID'].'">Izvēlēties</a></td>
+                            <td></td>
                             <td>' .$myRoute['no_valsts']. '</td>
                             <td>' .$myRoute['no_pilseta']. '</td>
                             <td>' .$myRoute['uz_valsts']. '</td>
@@ -243,6 +243,18 @@ class Routes extends Database {
 
         echo '</table>
             </div>';
+
+        $this->showPotentialCostSum();
+    }
+
+    protected function getPotentialCostSum() {
+
+
+    }
+
+    protected function showPotentialCostSum() {
+
+        echo '';
     }
 
     protected function getAllPassengerRoutes() {
@@ -312,7 +324,7 @@ class Routes extends Database {
                         </tr>';
                 } else if ($passengerRoute['irIzpildits'] == 1) {
                     echo '<tr class="routeCompleted">
-                            <td><a class="btn btn-primary route" href="route.php?ID='.$passengerRoute['ID'].'">Izvēlēties</a></td>
+                            <td></td>
                             <td>' .$passengerRoute['no_valsts']. '</td>
                             <td>' .$passengerRoute['no_pilseta']. '</td>
                             <td>' .$passengerRoute['uz_valsts']. '</td>
@@ -402,7 +414,7 @@ class Routes extends Database {
                         </tr>';
                 } else if ($driverRoute['irIzpildits'] == 1) {
                     echo '<tr class="routeCompleted">
-                            <td><a class="btn btn-primary route" href="route.php?ID='.$driverRoute['ID'].'">Izvēlēties</a></td>
+                            <td></td>
                             <td>' .$driverRoute['no_valsts']. '</td>
                             <td>' .$driverRoute['no_pilseta']. '</td>
                             <td>' .$driverRoute['uz_valsts']. '</td>
