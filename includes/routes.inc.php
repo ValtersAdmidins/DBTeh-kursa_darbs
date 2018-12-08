@@ -214,6 +214,7 @@ class Routes extends Database {
                             <td>' .$myRoute['izbrauksanas_laiks']. '</td>
                             <td>' .$myRoute['cena']. '</td>
                             <td>' .$myRoute['sedvietas']. '</td>
+                            <td><a class="btn btn-primary route" href="process/markRouteAsCompleted.php?ID='.$myRoute['ID'].'">Atzīmēt kā izpildītu</a></td>
                             <td><a class="btn btn-primary route" href="editRoute.php?ID='.$myRoute['ID'].'">Rediģēt maršrutu</a></td>
                             <td><a class="btn btn-primary route" href="process/deletingRoute.php?ID='.$myRoute['ID'].'">Dzēst maršrutu</a></td>
                         </tr>';
@@ -430,7 +431,6 @@ class Routes extends Database {
         $userLogin = new Login();
         $creatorUserRoles = $userLogin->getUserRoles($creatorUser['ID']);
         
-        
         $creatorUserVehicle = $this->getRouteVehicle($route['transportlidzekli_ID']);
 
         echo '
@@ -511,6 +511,26 @@ class Routes extends Database {
 
     }
 
+    public function markRouteAsCompleted($update_data) {
+
+        $sql = "UPDATE marsruti SET irIzpildits='$update_data[1]'
+                                    WHERE ID='$update_data[0]';";
+
+        $result = $this->connect()->query($sql);
+
+        if ($result) {
+
+            header("Location: ../index.php?edit=success");
+            exit();
+        }
+
+        else {
+
+            header("Location: ../index.php?edit=error");
+            exit();
+        }
+    }
+
     public function editARoute($update_data) {
 
         $country_from = $this->getNameOfCountryByID($update_data[1]);
@@ -528,8 +548,6 @@ class Routes extends Database {
             $country_to_name = $country_to['nosaukums'];
             $city_to_name = $city_to['nosaukums'];
         }
-
-        echo $country_from_name;
 
         $sql = "UPDATE marsruti SET no_valsts='$country_from_name', 
                                     no_pilseta='$city_from_name', 
