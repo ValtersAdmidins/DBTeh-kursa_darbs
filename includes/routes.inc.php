@@ -428,8 +428,9 @@ class Routes extends Database {
         $creatorUser = $this->getRouteCreatorUser($route_ID);
 
         $userLogin = new Login();
-        $creatorUserRole = $userLogin->getUserRoles($creatorUser['ID']);
-
+        $creatorUserRoles = $userLogin->getUserRoles($creatorUser['ID']);
+        
+        
         $creatorUserVehicle = $this->getRouteVehicle($route['transportlidzekli_ID']);
 
         echo '
@@ -447,10 +448,17 @@ class Routes extends Database {
                         <th scope="col">Izbraukšanas laiks</th>
                         <th scope="col">Piedavātā samaksa</th>';
 
-                        if ($creatorUserRole == 1) {
-                            echo '<th scope="col">Nepieciešamās sēdvietas</th>';
-                        } else if ($creatorUserRole == 2) {
-                            echo '<th scope="col">Pieejamās sēdvietas</th>';
+                        if (is_array($creatorUserRoles)) {
+
+                            foreach ($creatorUserRoles as $creatorUserRole) {
+                
+                                if ($creatorUserRole['lomas_ID'] == 1) {
+                                    echo '<th scope="col">Nepieciešamās sēdvietas</th>';
+                                } else if ($creatorUserRole['lomas_ID'] == 2) {
+                                    echo '<th scope="col">Pieejamās sēdvietas</th>';
+                                }
+                            }
+                            
                         }
                         
                 echo   '<th scope="col"></th>
