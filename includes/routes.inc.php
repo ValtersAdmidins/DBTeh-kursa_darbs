@@ -92,7 +92,7 @@ class Routes extends Database {
 
     public function getNameOfCountryByID($country_ID) {
 
-        $sql = "SELECT nosaukums FROM valstis WHERE ID='$country_ID'";
+        $sql = "CALL ValstsNosaukumsPecID('$country_ID')";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -105,7 +105,7 @@ class Routes extends Database {
 
     public function getNameOfCityByID($city_ID) {
 
-        $sql = "SELECT nosaukums FROM pilsetas WHERE ID='$city_ID'";
+        $sql = "CALL PilsetasNosaukumsPecID('$city_ID')";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -118,7 +118,7 @@ class Routes extends Database {
 
     public function getIDOfCountryByName($country_name) {
 
-        $sql = "SELECT ID FROM valstis WHERE nosaukums='$country_name'";
+        $sql = "CALL ValstsIDPecNosaukuma('$country_name')";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -131,7 +131,7 @@ class Routes extends Database {
 
     public function getIDOfCityByName($city_name) {
 
-        $sql = "SELECT ID FROM pilsetas WHERE nosaukums='$city_name'";
+        $sql = "CALL PilsetasIDPecNosaukuma('$city_name')";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -254,7 +254,11 @@ class Routes extends Database {
 
     protected function showPotentialCostSum() {
 
-        echo '';
+        echo '<div class="px-1">
+                <div class="ml-auto">
+                    TEST    
+                </div>
+              </div>';
     }
 
     protected function getAllPassengerRoutes() {

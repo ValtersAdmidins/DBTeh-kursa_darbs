@@ -18,8 +18,9 @@
                     $route_ID = $_GET['ID'];
 
                     echo '<h1 style="text-align: center;">Pieslēdzies kā pasažieris.</h1>';
-                    echo '<a class="btn btn-primary" href=" '.$_SERVER['HTTP_REFERER'].' ">← Atpakaļ</a>';
-
+                    echo '<div class="pl-3">
+                            <a class="btn btn-primary" href=" '.$_SERVER['HTTP_REFERER'].' ">← Atpakaļ</a>
+                          </div>';
                     echo '<h1 style="text-align: center;">↓ Maršruts ↓</h1>';
 
                     $route = new Routes();
@@ -31,8 +32,9 @@
                     $route_ID = $_GET['ID'];
 
                     echo '<h1 style="text-align: center;">Pieslēdzies kā šoferis.</h1>';
-                    echo '<a class="btn btn-primary" href=" '.$_SERVER['HTTP_REFERER'].' ">← Atpakaļ</a>';
-                    
+                    echo '<div class="pl-3">
+                            <a class="btn btn-primary" href=" '.$_SERVER['HTTP_REFERER'].' ">← Atpakaļ</a>
+                          </div>';                    
                     echo '<h1 style="text-align: center;">↓ Maršruts ↓</h1>';
 
                     $route = new Routes();

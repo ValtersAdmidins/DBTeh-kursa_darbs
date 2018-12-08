@@ -57,7 +57,7 @@
 
             <div class="form-group">
                 <div class="form-inline">
-                    <label for="country_from">Valsts no: </label>
+                    <label class="mr-2" for="country_from">Valsts no: </label>
                     <select id="country_from" class="form-control col" name="country_from" required>
                         <?php
 
@@ -66,7 +66,7 @@
 
                         ?>
                     </select>
-                    <label for="city_from">Pilsēta no: </label>
+                    <label class="mx-2" for="city_from">Pilsēta no: </label>
                     <select id="city_from" class="form-control col" name="city_from" required>
                         <!-- ajax html option here [js/locationSelection.js] -->
                     </select>
@@ -75,7 +75,7 @@
             
             <div class="form-group">
                 <div class="form-inline">
-                    <label for="country_to">Valsts uz: </label>
+                    <label class="mr-2" for="country_to">Valsts uz: </label>
                     <select id="country_to" class="form-control col" name="country_to" required>
                         <?php
 
@@ -85,7 +85,7 @@
                         ?>
                     </select>
 
-                    <label for="city_to">Pilsēta uz: </label>
+                    <label class="mx-2" for="city_to">Pilsēta uz: </label>
                     <select id="city_to" class="form-control col" name="city_to" required>
                         <!-- ajax html option here [js/locationSelection.js] -->
                     </select>
@@ -94,10 +94,10 @@
             
             <div class="form-group">
                 <div class="form-inline">
-                    <label for="address_from">Adresse no: </label>
+                    <label class="mr-2" for="address_from">Adresse no: </label>
                     <input type="text" maxlength="20" class="form-control col" name="address_from" placeholder="Adrese no" value="<?php echo $address_from ?>">
                     
-                    <label for="address_to">Adresse uz: </label>
+                    <label class="mx-2" for="address_to">Adresse uz: </label>
                     <input type="text" maxlength="20" class="form-control col" name="address_to" placeholder="Adrese uz" value="<?php echo $address_to ?>">
                 </div>
             </div>
@@ -109,7 +109,7 @@
 
             <div class="form-group">
                 <label for="price">Piedāvātā samaksa:</label>
-                <input type="number" min="0" class="form-control col" name="price" value="<?php echo $price ?>" required>
+                <input type="number" min="0" step=".01" class="form-control col" name="price" value="<?php echo $price ?>" required>
             </div>
 
             <div class="form-group">

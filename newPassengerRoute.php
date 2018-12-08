@@ -18,11 +18,9 @@
     <div class="container">
         <form id="routeForm" action="process/addingNewRoute.php" autocomplete="off" method="POST">
 
-            
-
             <div class="form-group">
                 <div class="form-inline">
-                    <label for="country_from">Valsts no: </label>
+                    <label class="mr-2" for="country_from">Valsts no: </label>
                     <select id="country_from" class="form-control col" name="country_from" required>
                         <option value="">Izvēlēties valsti*</option>
                         <?php
@@ -32,7 +30,7 @@
 
                         ?>
                     </select>
-                    <label for="city_from">Pilsēta no: </label>
+                    <label class="mx-2" for="city_from">Pilsēta no: </label>
                     <select id="city_from" class="form-control col" name="city_from" required>
                         <option value="">Izvēlēlieties valsti vispirms*</option>
                         <!-- ajax html option here [js/locationSelection.js] -->
@@ -42,7 +40,7 @@
             
             <div class="form-group">
                 <div class="form-inline">
-                    <label for="country_to">Valsts uz: </label>
+                    <label class="mr-2" for="country_to">Valsts uz: </label>
                     <select id="country_to" class="form-control col" name="country_to" required>
                         <option value="">Izvēlēties valsti*</option>
                         <?php
@@ -53,7 +51,7 @@
                         ?>
                     </select>
 
-                    <label for="city_to">Pilsēta uz: </label>
+                    <label class="mx-2" for="city_to">Pilsēta uz: </label>
                     <select id="city_to" class="form-control col" name="city_to" required>
                         <option value="">Izvēlēlieties valsti vispirms*</option>
                         <!-- ajax html option here [js/locationSelection.js] -->
@@ -63,10 +61,10 @@
             
             <div class="form-group">
                 <div class="form-inline">
-                    <label for="address_from">Adresse no: </label>
+                    <label class="mr-2" for="address_from">Adresse no: </label>
                     <input type="text" maxlength="20" class="form-control col" name="address_from" placeholder="Adrese no">
                     
-                    <label for="address_to">Adresse uz: </label>
+                    <label class="mx-2" for="address_to">Adresse uz: </label>
                     <input type="text" maxlength="20" class="form-control col" name="address_to" placeholder="Adrese uz">
                 </div>
             </div>

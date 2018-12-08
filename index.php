@@ -14,7 +14,7 @@
             if (isset($_SESSION['u_ID']) && $_SESSION['u_role'] == 1) {
 
                 echo '<h1 style="text-align: center;">Pieslēdzies kā pasažieris.</h1>
-                      <div class="col p-0">
+                      <div class="col pl-3">
                         <a class="btn btn-primary" href="newPassengerRoute.php">Izveidot jaunu pasažiera maršrutu</a>
                       </div>';
 
@@ -35,19 +35,19 @@
                 $myVehicles->checkIfUserHasVehicle($_SESSION['u_ID']);
 
                 if (isset($_SESSION['u_vehicle'])) {
-                    echo '<div class="col p-0">
+                    echo '<div class="col pl-3">
                             <a class="btn btn-primary" href="newDriverRoute.php">Izveidot jaunu šofera maršrutu</a>
                           </div>
-                          <div class="col p-0 my-1">
+                          <div class="col pl-3 my-1">
                             <a class="btn btn-primary" href="newDriverVehicle.php">Pievienot transportlīdzēkli</a>
                           </div>';
 
                 } else {
-                    echo '<div class="col p-0">
+                    echo '<div class="col pl-3">
                             <a class="btn btn-primary disabled">Izveidot jaunu šofera maršrutu</a>
                             <h4>Pirms variet izveidot šofera maršrutu piereģistrējiet transportlīdzekli.</h4>
                           </div>
-                          <div class="col p-0 my-1">
+                          <div class="col pl-3 my-1">
                             <a class="btn btn-primary" href="newDriverVehicle.php">Pievienot transportlīdzēkli</a>
                           </div>';
                 }
