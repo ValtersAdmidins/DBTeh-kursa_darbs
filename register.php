@@ -8,7 +8,7 @@
     
         <h1 style="text-align:center">REĢISTRĀCIJA</h1>
 
-        <form id="register" action="process/registration.php" method="POST">
+        <form id="register" action="process/registering.php" method="POST">
             
             <div class="form-group">
                 <input type="text" class="form-control" name="first" placeholder="Vārds*" required>

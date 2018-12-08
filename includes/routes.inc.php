@@ -1,6 +1,6 @@
 <?php
 
-include 'includes/login.inc.php';
+include 'login.inc.php';
 
 class Routes extends Database {
 
@@ -172,7 +172,7 @@ class Routes extends Database {
         echo '
             <hr>
             <div class="table-responsive">
-                <table class="table" style="width:100%">
+                <table class="table">
                     <thead>
                         <tr>
                             <th scope="col"></th>
@@ -191,7 +191,7 @@ class Routes extends Database {
                                 echo   '<th scope="col">Pieejamās sēdvietas</th>';
                             }
 
-                    echo   '
+                    echo   '<th scope="col"></th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                         </tr>
@@ -203,6 +203,7 @@ class Routes extends Database {
 
             foreach ($myRoutes as $myRoute) {
 
+                if ($myRoute['irIzpildits'] == 0) {
                     echo '<tr>
                             <td><a class="btn btn-primary route" href="route.php?ID='.$myRoute['ID'].'">Izvēlēties</a></td>
                             <td>' .$myRoute['no_valsts']. '</td>
@@ -214,10 +215,26 @@ class Routes extends Database {
                             <td>' .$myRoute['izbrauksanas_laiks']. '</td>
                             <td>' .$myRoute['cena']. '</td>
                             <td>' .$myRoute['sedvietas']. '</td>
-                            <td><a class="btn btn-primary route" href="process/markRouteAsCompleted.php?ID='.$myRoute['ID'].'">Atzīmēt kā izpildītu</a></td>
+                            <td><a class="btn btn-primary route" href="process/markingRouteAsCompleted.php?ID='.$myRoute['ID'].'">Atzīmēt kā izpildītu</a></td>
                             <td><a class="btn btn-primary route" href="editRoute.php?ID='.$myRoute['ID'].'">Rediģēt maršrutu</a></td>
                             <td><a class="btn btn-primary route" href="process/deletingRoute.php?ID='.$myRoute['ID'].'">Dzēst maršrutu</a></td>
-                        </tr>';
+                          </tr>';
+                } else if ($myRoute['irIzpildits'] == 1) {
+                    echo '<tr class="routeCompleted">
+                            <td><a class="btn btn-primary route" href="route.php?ID='.$myRoute['ID'].'">Izvēlēties</a></td>
+                            <td>' .$myRoute['no_valsts']. '</td>
+                            <td>' .$myRoute['no_pilseta']. '</td>
+                            <td>' .$myRoute['uz_valsts']. '</td>
+                            <td>' .$myRoute['uz_pilseta']. '</td>
+                            <td>' .$myRoute['no_adrese']. '</td>
+                            <td>' .$myRoute['uz_adrese']. '</td>
+                            <td>' .$myRoute['izbrauksanas_laiks']. '</td>
+                            <td>' .$myRoute['cena']. '</td>
+                            <td>' .$myRoute['sedvietas']. '</td>
+                            <td colspan="3">Maršruts atzīmēts kā izpildīts</td>
+                          </tr>';
+                }
+                    
             }
 
             echo '</tbody>';
@@ -255,7 +272,7 @@ class Routes extends Database {
         echo '
             <hr>
             <div class="table-responsive">
-                <table class="table" style="width:100%">
+                <table class="table">
                     <thead>
                         <tr>
                             <th scope="col"></th>
@@ -268,8 +285,6 @@ class Routes extends Database {
                             <th scope="col">Izbraukšanas laiks</th>
                             <th scope="col">Piedavātā samaksa</th>
                             <th scope="col">Nepieciešamās sēdvietas</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
                         </tr>
                     </thead>';
 
@@ -296,8 +311,9 @@ class Routes extends Database {
             echo '</tbody>';
         }
 
-        echo '</table>
-            </div>';
+        echo '
+            </table>
+        </div>';
     }
 
     protected function getAllDriverRoutes() {
@@ -328,7 +344,7 @@ class Routes extends Database {
         echo '
             <hr>
             <div class="table-responsive">
-                <table class="table" style="width:100%">
+                <table class="table">
                     <thead>
                         <tr>
                             <th scope="col"></th>
@@ -341,8 +357,6 @@ class Routes extends Database {
                             <th scope="col">Izbraukšanas laiks</th>
                             <th scope="col">Piedavātā samaksa</th>
                             <th scope="col">Pieejamās sēdvietas</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
                         </tr>
                     </thead>';
 
@@ -369,8 +383,9 @@ class Routes extends Database {
             echo '</tbody>';
         }
 
-        echo '</table>
-            </div>';
+        echo '
+            </table>
+        </div>';
 
     }
 
@@ -436,7 +451,7 @@ class Routes extends Database {
         echo '
         <hr>
         <div class="table-responsive">
-            <table class="table" style="width:100%">
+            <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">No valstis</th>
@@ -461,8 +476,7 @@ class Routes extends Database {
                             
                         }
                         
-                echo   '<th scope="col"></th>
-                        <th scope="col"></th>
+                echo   '
                     </tr>
                 </thead>';
 
@@ -511,22 +525,21 @@ class Routes extends Database {
 
     }
 
-    public function markRouteAsCompleted($update_data) {
+    public function markRouteAsCompleted($route_ID) {
 
-        $sql = "UPDATE marsruti SET irIzpildits='$update_data[1]'
-                                    WHERE ID='$update_data[0]';";
-
+        $sql = "UPDATE marsruti SET irIzpildits=1
+                WHERE ID='$route_ID';";
         $result = $this->connect()->query($sql);
 
         if ($result) {
 
-            header("Location: ../index.php?edit=success");
+            header("Location: ../index.php?markedAsCompleted=success");
             exit();
         }
 
         else {
 
-            header("Location: ../index.php?edit=error");
+            header("Location: ../index.php?markedAsCompleted=error");
             exit();
         }
     }

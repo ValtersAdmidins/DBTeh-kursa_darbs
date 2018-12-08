@@ -16,6 +16,14 @@ th, td {
   text-align: center;
 }
 
+.routeCompleted {
+  background-color: #eb9595;
+}
+
+.routeCompleted:hover {
+  background-color: #f0abab;
+}
+
 tr:hover {background-color: #c2def5;}
 
 .success-msg-wrapper {

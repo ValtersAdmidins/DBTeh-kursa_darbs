@@ -18,15 +18,15 @@
 
             $ID = $row['ID'];
 
-            // $country_from = $route->getNameOfCountryByID($row['no_valsts']);
-            // $city_from = $route->getNameOfCityByID($row['no_pilseta']);
-            // $country_to = $route->getNameOfCountryByID($row['uz_valsts']);
-            // $city_to = $route->getNameOfCityByID($row['uz_pilseta']); 
+            $country_from = $route->getNameOfCountryByID($row['no_valsts']);
+            $city_from = $route->getNameOfCityByID($row['no_pilseta']);
+            $country_to = $route->getNameOfCountryByID($row['uz_valsts']);
+            $city_to = $route->getNameOfCityByID($row['uz_pilseta']); 
 
-            // $country_from_name = $row['no_valsts'];
-            // $city_from_name = $row['no_pilseta'];
-            // $country_to_name = $row['uz_valsts'];
-            // $city_to_name = $row['uz_pilseta']; 
+            $country_from_name = $row['no_valsts'];
+            $city_from_name = $row['no_pilseta'];
+            $country_to_name = $row['uz_valsts'];
+            $city_to_name = $row['uz_pilseta']; 
 
             $address_from = $row['no_adrese'];
             $address_to = $row['uz_adrese'];
@@ -62,7 +62,7 @@
                         <?php
 
                             $countries = new Location();
-                            $countries->showSelectedCountry($route_ID);
+                            $countries->showAllCountries($route_ID);
 
                         ?>
                     </select>
