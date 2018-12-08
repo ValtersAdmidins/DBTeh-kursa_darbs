@@ -16,7 +16,7 @@
     <h2 style="text-align: center;">Izveidot jaunu pasažiera maršrutu</h2>
     
     <div class="container">
-        <form id="routeForm" action="process/addingNewRoute.php" method="POST">
+        <form id="routeForm" action="process/addingNewRoute.php" autocomplete="off" method="POST">
 
             
 

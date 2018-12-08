@@ -1,5 +1,7 @@
 <?php
 
+include 'includes/login.inc.php';
+
 class Routes extends Database {
 
     public function addPassengerRoute($insert_data) {
@@ -181,8 +183,15 @@ class Routes extends Database {
                             <th scope="col">No adreses</th>
                             <th scope="col">Uz adresi</th>
                             <th scope="col">Izbraukšanas laiks</th>
-                            <th scope="col">Piedavātā samaksa</th>
-                            <th scope="col">Pieejamās sēdvietas</th>
+                            <th scope="col">Piedavātā samaksa</th>';
+
+                            if ($_SESSION['u_ID'] == 1) {
+                                echo   '<th scope="col">Nepieciešamās sēdvietas</th>';
+                            } else if ($_SESSION['u_ID'] == 2) {
+                                echo   '<th scope="col">Pieejamās sēdvietas</th>';
+                            }
+
+                    echo   '
                             <th scope="col"></th>
                             <th scope="col"></th>
                         </tr>
@@ -257,7 +266,7 @@ class Routes extends Database {
                             <th scope="col">Uz adresi</th>
                             <th scope="col">Izbraukšanas laiks</th>
                             <th scope="col">Piedavātā samaksa</th>
-                            <th scope="col">Pieejamās sēdvietas</th>
+                            <th scope="col">Nepieciešamās sēdvietas</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                         </tr>
@@ -417,6 +426,10 @@ class Routes extends Database {
 
         $route = $this->getARoute($route_ID);
         $creatorUser = $this->getRouteCreatorUser($route_ID);
+
+        $userLogin = new Login();
+        $creatorUserRole = $userLogin->getUserRoles($creatorUser['ID']);
+
         $creatorUserVehicle = $this->getRouteVehicle($route['transportlidzekli_ID']);
 
         echo '
@@ -432,9 +445,15 @@ class Routes extends Database {
                         <th scope="col">No adreses</th>
                         <th scope="col">Uz adresi</th>
                         <th scope="col">Izbraukšanas laiks</th>
-                        <th scope="col">Piedavātā samaksa</th>
-                        <th scope="col">Pieejamās sēdvietas</th>
-                        <th scope="col"></th>
+                        <th scope="col">Piedavātā samaksa</th>';
+
+                        if ($creatorUserRole == 1) {
+                            echo '<th scope="col">Nepieciešamās sēdvietas</th>';
+                        } else if ($creatorUserRole == 2) {
+                            echo '<th scope="col">Pieejamās sēdvietas</th>';
+                        }
+                        
+                echo   '<th scope="col"></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>';

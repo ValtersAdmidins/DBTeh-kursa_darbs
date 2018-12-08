@@ -17,7 +17,7 @@
     <h2 style="text-align: center;">Izveidot jaunu šofera maršrutu</h2>
     
     <div class="container">
-        <form id="routeForm" action="process/addingNewRoute.php" method="POST">
+        <form id="routeForm" action="process/addingNewRoute.php" autocomplete="off" method="POST">
             
             <div class="form-group">
                 <label for="vehicle">Izvēlēlieties transportalīdzekli: </label>

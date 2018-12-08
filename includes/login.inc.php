@@ -2,6 +2,23 @@
 
 class Login extends Database {
 
+    public function getUserRoles($user_ID) {
+
+        $sql = "SELECT * FROM lietotajiem_ir_lomas WHERE lietotaji_ID='$user_ID'";
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+            
+            while ($row = $result->fetch_assoc()) {
+
+                $data[] = $row;
+            }
+
+            return $data;
+        }
+    }
+
     public function loginUser($user_data) {
 
         session_start();
@@ -50,14 +67,16 @@ class Login extends Database {
                         $_SESSION['u_last'] = $rowUsers['uzvards'];
                         $_SESSION['u_email'] = $rowUsers['epasts'];
                         $_SESSION['u_username'] = $rowUsers['lietotajvards'];
-                        
-                        $user_ID = $rowUsers['ID'];
-                        $sql = "SELECT * FROM lietotajiem_ir_lomas WHERE lietotaji_ID='$user_ID'";
-                        $resultRoles = $this->connect()->query($sql);
 
-                        if ($rowRoles = $resultRoles->fetch_assoc()) {
+                        $userRoles = $this->getUserRoles($rowUsers['ID']);
+                        
+                        if (is_array($userRoles)) {
+
+                            foreach ($userRoles as $userRole) {
+
+                                $_SESSION['u_role'] = $userRole['lomas_ID'];
+                            }
                             
-                            $_SESSION['u_role'] = $rowRoles['lomas_ID'];
                         }
 
                         header("Location: ../index.php?login=success");
