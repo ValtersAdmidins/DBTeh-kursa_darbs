@@ -102,13 +102,13 @@ class Routes extends Database {
 
         if ($result) {
 
-            header("Location: ../route.php?route=success");
+            header("Location: ../index.php?appliedForRoute=success");
             exit();
         }
 
         else {
 
-            header("Location: ../route.php?route=error");
+            header("Location: ../index.php?appliedForRoute=error");
             exit();
         }
     }

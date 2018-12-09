@@ -14,9 +14,11 @@
             if (isset($_SESSION['u_ID']) && $_SESSION['u_role'] == 1) {
 
                 echo '<h1 style="text-align: center;">Pieslēdzies kā pasažieris.</h1>
+                      <br>
                       <div class="col pl-3">
                         <a class="btn btn-primary" href="newPassengerRoute.php">Izveidot jaunu pasažiera maršrutu</a>
-                      </div>';
+                      </div>
+                      <br>';
 
                 echo '<h1 style="text-align: center;">↓ Marsruti kuriem esmu pieteicies ↓</h1>';
                 $myRoutes = new Routes();
@@ -34,6 +36,7 @@
             else if (isset($_SESSION['u_ID']) && $_SESSION['u_role'] == 2) {
                 
                 echo '<h1 style="text-align: center;">Pieslēdzies kā šoferis.</h1>';
+                echo '<br>';
                 
                 $myVehicles = new Vehicles();
                 $myVehicles->checkIfUserHasVehicle($_SESSION['u_ID']);
@@ -55,7 +58,8 @@
                             <a class="btn btn-primary" href="newDriverVehicle.php">Pievienot transportlīdzēkli</a>
                           </div>';
                 }
-
+                
+                echo '<br>';
                 echo '<h1 style="text-align: center;">↓ Marsruti kuriem esmu pieteicies ↓</h1>';
                 $myRoutes = new Routes();
                 $myRoutes->showAllMyAppliedToRoutes();

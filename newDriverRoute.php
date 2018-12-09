@@ -90,12 +90,12 @@
 
             <div class="form-group">
                 <label for="price">Piedāvātā samaksa:</label>
-                <input type="number" class="form-control" min="0" step=".01" name="price">
+                <input type="number" class="form-control" min="0" step=".01" name="price" required>
             </div>
 
             <div class="form-group">
                 <label for="seats">Pieejamās sēdvietas: </label>
-                <input type="number" class="form-control" min="1" name="seats">
+                <input type="number" class="form-control" min="1" name="seats" required>
             </div>
 
             <button class="btn btn-primary" type="submit" name="submit">Izveidot maršrutu!</button>
