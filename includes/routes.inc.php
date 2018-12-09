@@ -240,10 +240,19 @@ class Routes extends Database {
             echo '<tbody>';
 
             foreach ($myCreatedRoutes as $myCreatedRoute) {
+                
+                $countOfUsersAppliedToRoute = $this->getCountOfUsersAppliedToRoute($myCreatedRoute['ID']);
+                $seats = $myCreatedRoute['sedvietas'] - $countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'];    
 
                 if ($myCreatedRoute['irIzpildits'] == 0) {
-                    echo '<tr>
-                            <td><a class="btn btn-primary route" href="route.php?ID='.$myCreatedRoute['ID'].'">Izvēlēties</a></td>
+
+                    if ($seats == 0) {
+                        echo '<tr class="routeFull">';
+                    } else {
+                        echo '<tr>';
+                    }
+
+                    echo '  <td><a class="btn btn-primary route" href="route.php?ID='.$myCreatedRoute['ID'].'">Izvēlēties</a></td>
                             <td>' .$myCreatedRoute['no_valsts']. '</td>
                             <td>' .$myCreatedRoute['no_pilseta']. '</td>
                             <td>' .$myCreatedRoute['uz_valsts']. '</td>
@@ -251,9 +260,19 @@ class Routes extends Database {
                             <td>' .$myCreatedRoute['no_adrese']. '</td>
                             <td>' .$myCreatedRoute['uz_adrese']. '</td>
                             <td>' .$myCreatedRoute['izbrauksanas_laiks']. '</td>
-                            <td>' .$myCreatedRoute['cena']. '</td>
-                            <td>' .$myCreatedRoute['sedvietas']. '</td>
-                            <td><a class="btn btn-primary route" href="process/markingRouteAsCompleted.php?ID='.$myCreatedRoute['ID'].'">Atzīmēt kā izpildītu</a></td>
+                            <td>' .$myCreatedRoute['cena']. '</td>';
+                            if ($countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'] > 0) {
+                
+                                $seats = $myCreatedRoute['sedvietas'] - $countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'];
+                
+                                echo '<td>Brīvas: ' .$seats. '
+                                      <br>
+                                      Aizņemtas: ' .$countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki']. '</td>';
+                            } else {
+                
+                                echo '<td>Brīvas: ' .$myCreatedRoute['sedvietas']. '</td>';
+                            }
+                      echo '<td><a class="btn btn-primary route" href="process/markingRouteAsCompleted.php?ID='.$myCreatedRoute['ID'].'">Atzīmēt kā izpildītu</a></td>
                             <td><a class="btn btn-primary route" href="editRoute.php?ID='.$myCreatedRoute['ID'].'">Rediģēt maršrutu</a></td>
                             <td><a class="btn btn-primary route" href="process/deletingRoute.php?ID='.$myCreatedRoute['ID'].'">Dzēst maršrutu</a></td>
                           </tr>';
@@ -267,9 +286,20 @@ class Routes extends Database {
                             <td>' .$myCreatedRoute['no_adrese']. '</td>
                             <td>' .$myCreatedRoute['uz_adrese']. '</td>
                             <td>' .$myCreatedRoute['izbrauksanas_laiks']. '</td>
-                            <td>' .$myCreatedRoute['cena']. '</td>
-                            <td>' .$myCreatedRoute['sedvietas']. '</td>
-                            <td colspan="2">Maršruts atzīmēts kā izpildīts</td>
+                            <td>' .$myCreatedRoute['cena']. '</td>';
+                            if ($countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'] > 0) {
+                
+                                $seats = $myCreatedRoute['sedvietas'] - $countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'];
+                
+                                echo '<td>Brīvas: ' .$seats. '
+                                      <br>
+                                      Aizņemtas: ' .$countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki']. '</td>';
+                            } else {
+                
+                                echo '<td>Brīvas: ' .$myCreatedRoute['sedvietas']. '</td>';
+                            }
+
+                    echo   '<td colspan="2">Maršruts atzīmēts kā izpildīts</td>
                             <td><a class="btn btn-primary route" href="process/deletingRoute.php?ID='.$myCreatedRoute['ID'].'">Dzēst maršrutu</a></td>
                           </tr>';
                 }
@@ -346,9 +376,18 @@ class Routes extends Database {
 
             foreach ($myAppliedToRoutes as $myAppliedToRoute) {
 
+                $countOfUsersAppliedToRoute = $this->getCountOfUsersAppliedToRoute($myAppliedToRoute['ID']);
+                $seats = $myAppliedToRoute['sedvietas'] - $countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'];        
+
                 if ($myAppliedToRoute['irIzpildits'] == 0) {
-                    echo '<tr>
-                            <td><a class="btn btn-primary route" href="route.php?ID='.$myAppliedToRoute['ID'].'">Izvēlēties</a></td>
+
+                    if ($seats == 0) {
+                        echo '<tr class="routeFull">';
+                    } else {
+                        echo '<tr>';
+                    }
+
+                    echo '  <td><a class="btn btn-primary route" href="route.php?ID='.$myAppliedToRoute['ID'].'">Izvēlēties</a></td>
                             <td>' .$myAppliedToRoute['no_valsts']. '</td>
                             <td>' .$myAppliedToRoute['no_pilseta']. '</td>
                             <td>' .$myAppliedToRoute['uz_valsts']. '</td>
@@ -356,9 +395,19 @@ class Routes extends Database {
                             <td>' .$myAppliedToRoute['no_adrese']. '</td>
                             <td>' .$myAppliedToRoute['uz_adrese']. '</td>
                             <td>' .$myAppliedToRoute['izbrauksanas_laiks']. '</td>
-                            <td>' .$myAppliedToRoute['cena']. '</td>
-                            <td>' .$myAppliedToRoute['sedvietas']. '</td>
-                            <td><a class="btn btn-danger route" href="process/unapplyingFromRoute.php?ID='.$myAppliedToRoute['ID'].'">Atteikties no maršruta!</a></td>
+                            <td>' .$myAppliedToRoute['cena']. '</td>';
+                            
+                            if ($countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'] > 0) {
+                
+                                echo '<td>Brīvas: ' .$seats. '
+                                      <br>
+                                      Aizņemtas: ' .$countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki']. '</td>';
+                            } else {
+                
+                                echo '<td>Brīvas: ' .$myAppliedToRoute['sedvietas']. '</td>';
+                            }
+                            
+                    echo '  <td><a class="btn btn-danger route" href="process/unapplyingFromRoute.php?ID='.$myAppliedToRoute['ID'].'">Atteikties no maršruta!</a></td>
                             <td colspan="2"></td>
                           </tr>';
                 } else if ($myAppliedToRoute['irIzpildits'] == 1) {
@@ -655,9 +704,17 @@ class Routes extends Database {
 
             foreach ($driverRoutes as $driverRoute) {
 
+                $countOfUsersAppliedToRoute = $this->getCountOfUsersAppliedToRoute($driverRoute['ID']);
+                $seats = $driverRoute['sedvietas'] - $countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'];    
+
                 if ($driverRoute['irIzpildits'] == 0) {
-                    echo '<tr>
-                            <td><a class="btn btn-primary route" href="route.php?ID='.$driverRoute['ID'].'">Izvēlēties</a></td>
+
+                    if ($seats == 0) {
+                        echo '<tr class="routeFull">';
+                    } else {
+                        echo '<tr>';
+                    }
+                    echo '  <td><a class="btn btn-primary route" href="route.php?ID='.$driverRoute['ID'].'">Izvēlēties</a></td>
                             <td>' .$driverRoute['no_valsts']. '</td>
                             <td>' .$driverRoute['no_pilseta']. '</td>
                             <td>' .$driverRoute['uz_valsts']. '</td>
@@ -665,10 +722,21 @@ class Routes extends Database {
                             <td>' .$driverRoute['no_adrese']. '</td>
                             <td>' .$driverRoute['uz_adrese']. '</td>
                             <td>' .$driverRoute['izbrauksanas_laiks']. '</td>
-                            <td>' .$driverRoute['cena']. '</td>
-                            <td>' .$driverRoute['sedvietas']. '</td>
-                            <td></td>
+                            <td>' .$driverRoute['cena']. '</td>';
+
+                            if ($countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'] > 0) {
+                
+                                echo '<td>Brīvas: ' .$seats. '
+                                      <br>
+                                      Aizņemtas: ' .$countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki']. '</td>';
+                            } else {
+                
+                                echo '<td>Brīvas: ' .$driverRoute['sedvietas']. '</td>';
+                            }
+
+                    echo '<td></td>
                         </tr>';
+
                 } else if ($driverRoute['irIzpildits'] == 1) {
                     echo '<tr class="routeCompleted">
                             <td></td>
@@ -679,9 +747,20 @@ class Routes extends Database {
                             <td>' .$driverRoute['no_adrese']. '</td>
                             <td>' .$driverRoute['uz_adrese']. '</td>
                             <td>' .$driverRoute['izbrauksanas_laiks']. '</td>
-                            <td>' .$driverRoute['cena']. '</td>
-                            <td>' .$driverRoute['sedvietas']. '</td>
-                            <td>Maršruts atzīmēts kā izpildīts</td>
+                            <td>' .$driverRoute['cena']. '</td>';
+                            if ($countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'] > 0) {
+                
+                                $seats = $driverRoute['sedvietas'] - $countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'];
+                
+                                echo '<td>Brīvas: ' .$seats. '
+                                      <br>
+                                      Aizņemtas: ' .$countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki']. '</td>';
+                            } else {
+                
+                                echo '<td>Brīvas: ' .$driverRoute['sedvietas']. '</td>';
+                            }
+
+                    echo '<td>Maršruts atzīmēts kā izpildīts</td>
                         </tr>';
                 }
             }
@@ -744,6 +823,19 @@ class Routes extends Database {
         }
     }
 
+    protected function getCountOfUsersAppliedToRoute($route_ID) {
+
+        $sql = "SELECT marsrutaNeizveidotajiDalibnieki('$route_ID') AS marsrutaNeizveidotajiDalibnieki";
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+    
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+    }
+
     public function showARoute($route_ID) {
 
         $route = $this->getARoute($route_ID);
@@ -795,18 +887,37 @@ class Routes extends Database {
             
             echo '<tbody>';
 
-            echo '<tr>
-                    <td>' .$route['no_valsts']. '</td>
+            $countOfUsersAppliedToRoute = $this->getCountOfUsersAppliedToRoute($route_ID);
+            $seats = $route['sedvietas'] - $countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'];    
+
+            if ($seats == 0) {
+                echo '<tr class="routeFull">';
+            } else {
+                echo '<tr>';
+            }
+            echo '  <td>' .$route['no_valsts']. '</td>
                     <td>' .$route['no_pilseta']. '</td>
                     <td>' .$route['uz_valsts']. '</td>
                     <td>' .$route['uz_pilseta']. '</td>
                     <td>' .$route['no_adrese']. '</td>
                     <td>' .$route['uz_adrese']. '</td>
                     <td>' .$route['izbrauksanas_laiks']. '</td>
-                    <td>' .$route['cena']. '</td>
-                    <td>' .$route['sedvietas']. '</td>';
+                    <td>' .$route['cena']. '</td>';
 
-            if ($creatorUser['ID'] != $_SESSION['u_ID']) {
+            if ($countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'] > 0) {
+                
+                $seats = $route['sedvietas'] - $countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'];
+
+                echo '<td>Brīvas: ' .$seats. '
+                      <br>
+                      Aizņemtas: ' .$countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki']. '</td>';
+            } else {
+
+                echo '<td>Brīvas: ' .$route['sedvietas']. '</td>';
+            }
+                    
+
+            if ($creatorUser['ID'] != $_SESSION['u_ID'] && $seats != 0) {
                 echo '<td><a class="btn btn-primary route" href="process/applyingForRoute.php?ID='.$route['ID'].'">Pieteikties maršrutam</a></td>
                 </tr>';
             }
