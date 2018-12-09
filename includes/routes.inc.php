@@ -187,7 +187,7 @@ class Routes extends Database {
 
     public function showAllMyCreatedRoutes() {
 
-        $myRoutes = $this->getAllMyCreatedRoutes();
+        $myCreatedRoutes = $this->getAllMyCreatedRoutes();
 
         echo '
             <hr>
@@ -217,42 +217,42 @@ class Routes extends Database {
                         </tr>
                     </thead>';
 
-        if (is_array($myRoutes)) {
+        if (is_array($myCreatedRoutes)) {
             
             echo '<tbody>';
 
-            foreach ($myRoutes as $myRoute) {
+            foreach ($myCreatedRoutes as $myCreatedRoute) {
 
-                if ($myRoute['irIzpildits'] == 0) {
+                if ($myCreatedRoute['irIzpildits'] == 0) {
                     echo '<tr>
-                            <td><a class="btn btn-primary route" href="route.php?ID='.$myRoute['ID'].'">Izvēlēties</a></td>
-                            <td>' .$myRoute['no_valsts']. '</td>
-                            <td>' .$myRoute['no_pilseta']. '</td>
-                            <td>' .$myRoute['uz_valsts']. '</td>
-                            <td>' .$myRoute['uz_pilseta']. '</td>
-                            <td>' .$myRoute['no_adrese']. '</td>
-                            <td>' .$myRoute['uz_adrese']. '</td>
-                            <td>' .$myRoute['izbrauksanas_laiks']. '</td>
-                            <td>' .$myRoute['cena']. '</td>
-                            <td>' .$myRoute['sedvietas']. '</td>
-                            <td><a class="btn btn-primary route" href="process/markingRouteAsCompleted.php?ID='.$myRoute['ID'].'">Atzīmēt kā izpildītu</a></td>
-                            <td><a class="btn btn-primary route" href="editRoute.php?ID='.$myRoute['ID'].'">Rediģēt maršrutu</a></td>
-                            <td><a class="btn btn-primary route" href="process/deletingRoute.php?ID='.$myRoute['ID'].'">Dzēst maršrutu</a></td>
+                            <td><a class="btn btn-primary route" href="route.php?ID='.$myCreatedRoute['ID'].'">Izvēlēties</a></td>
+                            <td>' .$myCreatedRoute['no_valsts']. '</td>
+                            <td>' .$myCreatedRoute['no_pilseta']. '</td>
+                            <td>' .$myCreatedRoute['uz_valsts']. '</td>
+                            <td>' .$myCreatedRoute['uz_pilseta']. '</td>
+                            <td>' .$myCreatedRoute['no_adrese']. '</td>
+                            <td>' .$myCreatedRoute['uz_adrese']. '</td>
+                            <td>' .$myCreatedRoute['izbrauksanas_laiks']. '</td>
+                            <td>' .$myCreatedRoute['cena']. '</td>
+                            <td>' .$myCreatedRoute['sedvietas']. '</td>
+                            <td><a class="btn btn-primary route" href="process/markingRouteAsCompleted.php?ID='.$myCreatedRoute['ID'].'">Atzīmēt kā izpildītu</a></td>
+                            <td><a class="btn btn-primary route" href="editRoute.php?ID='.$myCreatedRoute['ID'].'">Rediģēt maršrutu</a></td>
+                            <td><a class="btn btn-primary route" href="process/deletingRoute.php?ID='.$myCreatedRoute['ID'].'">Dzēst maršrutu</a></td>
                           </tr>';
-                } else if ($myRoute['irIzpildits'] == 1) {
+                } else if ($myCreatedRoute['irIzpildits'] == 1) {
                     echo '<tr class="routeCompleted">
                             <td></td>
-                            <td>' .$myRoute['no_valsts']. '</td>
-                            <td>' .$myRoute['no_pilseta']. '</td>
-                            <td>' .$myRoute['uz_valsts']. '</td>
-                            <td>' .$myRoute['uz_pilseta']. '</td>
-                            <td>' .$myRoute['no_adrese']. '</td>
-                            <td>' .$myRoute['uz_adrese']. '</td>
-                            <td>' .$myRoute['izbrauksanas_laiks']. '</td>
-                            <td>' .$myRoute['cena']. '</td>
-                            <td>' .$myRoute['sedvietas']. '</td>
+                            <td>' .$myCreatedRoute['no_valsts']. '</td>
+                            <td>' .$myCreatedRoute['no_pilseta']. '</td>
+                            <td>' .$myCreatedRoute['uz_valsts']. '</td>
+                            <td>' .$myCreatedRoute['uz_pilseta']. '</td>
+                            <td>' .$myCreatedRoute['no_adrese']. '</td>
+                            <td>' .$myCreatedRoute['uz_adrese']. '</td>
+                            <td>' .$myCreatedRoute['izbrauksanas_laiks']. '</td>
+                            <td>' .$myCreatedRoute['cena']. '</td>
+                            <td>' .$myCreatedRoute['sedvietas']. '</td>
                             <td colspan="2">Maršruts atzīmēts kā izpildīts</td>
-                            <td><a class="btn btn-primary route" href="process/deletingRoute.php?ID='.$myRoute['ID'].'">Dzēst maršrutu</a></td>
+                            <td><a class="btn btn-primary route" href="process/deletingRoute.php?ID='.$myCreatedRoute['ID'].'">Dzēst maršrutu</a></td>
                           </tr>';
                 }
                     
@@ -265,15 +265,119 @@ class Routes extends Database {
             </div>';
 
         echo '<br>';
-        $this->showCostSum();
+        $this->showMyCreatedRouteCostSum();
         echo '<br>
               <br>';
     }
 
-    protected function getNotCompletedRouteCostSum() {
+    protected function getAllMyAppliedToRoutes() {
 
         $user_ID = $_SESSION['u_ID'];
-        $sql = "SELECT manaNeizpilditoMarsrutuKopsumma('$user_ID') AS kopsumma";
+        $sql = "CALL visiManiPieteiktieMarsruti('$user_ID')";
+
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+            
+            while ($row = $result->fetch_assoc()) {
+
+                $data[] = $row;
+            }
+
+            return $data;
+        }
+
+    }
+
+    public function showAllMyAppliedToRoutes() {
+
+        $myAppliedToRoutes = $this->getAllMyAppliedToRoutes();
+
+        echo '
+            <hr>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">No valstis</th>
+                            <th scope="col">No pilsetas</th>
+                            <th scope="col">Uz valsti</th>
+                            <th scope="col">Uz pilsetu</th>
+                            <th scope="col">No adreses</th>
+                            <th scope="col">Uz adresi</th>
+                            <th scope="col">Izbraukšanas laiks</th>
+                            <th scope="col">Piedavātā samaksa</th>';
+
+                            if ($_SESSION['u_ID'] == 1) {
+                                echo   '<th scope="col">Nepieciešamās sēdvietas</th>';
+                            } else if ($_SESSION['u_ID'] == 2) {
+                                echo   '<th scope="col">Pieejamās sēdvietas</th>';
+                            }
+
+                    echo   '<th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>';
+
+        if (is_array($myAppliedToRoutes)) {
+            
+            echo '<tbody>';
+
+            foreach ($myAppliedToRoutes as $myAppliedToRoute) {
+
+                if ($myAppliedToRoute['irIzpildits'] == 0) {
+                    echo '<tr>
+                            <td><a class="btn btn-primary route" href="route.php?ID='.$myAppliedToRoute['ID'].'">Izvēlēties</a></td>
+                            <td>' .$myAppliedToRoute['no_valsts']. '</td>
+                            <td>' .$myAppliedToRoute['no_pilseta']. '</td>
+                            <td>' .$myAppliedToRoute['uz_valsts']. '</td>
+                            <td>' .$myAppliedToRoute['uz_pilseta']. '</td>
+                            <td>' .$myAppliedToRoute['no_adrese']. '</td>
+                            <td>' .$myAppliedToRoute['uz_adrese']. '</td>
+                            <td>' .$myAppliedToRoute['izbrauksanas_laiks']. '</td>
+                            <td>' .$myAppliedToRoute['cena']. '</td>
+                            <td>' .$myAppliedToRoute['sedvietas']. '</td>
+                            <td><a class="btn btn-danger route" href="process/unapplyingFromRoute.php?ID='.$myAppliedToRoute['ID'].'">Atteikties no maršruta!</a></td>
+                            <td colspan="2"></td>
+                          </tr>';
+                } else if ($myAppliedToRoute['irIzpildits'] == 1) {
+                    echo '<tr class="routeCompleted">
+                            <td></td>
+                            <td>' .$myAppliedToRoute['no_valsts']. '</td>
+                            <td>' .$myAppliedToRoute['no_pilseta']. '</td>
+                            <td>' .$myAppliedToRoute['uz_valsts']. '</td>
+                            <td>' .$myAppliedToRoute['uz_pilseta']. '</td>
+                            <td>' .$myAppliedToRoute['no_adrese']. '</td>
+                            <td>' .$myAppliedToRoute['uz_adrese']. '</td>
+                            <td>' .$myAppliedToRoute['izbrauksanas_laiks']. '</td>
+                            <td>' .$myAppliedToRoute['cena']. '</td>
+                            <td>' .$myAppliedToRoute['sedvietas']. '</td>
+                            <td colspan="2">Maršruts atzīmēts kā izpildīts</td>
+                            <td><a class="btn btn-primary route" href="process/rateARoute.php?ID='.$myAppliedToRoute['ID'].'">Novērtēt braucienu!</a></td>
+                          </tr>';
+                }
+                    
+            }
+
+            echo '</tbody>';
+        }
+
+        echo '</table>
+            </div>';
+
+        echo '<br>';
+        $this->showMyAppliedToRouteCostSum();
+        echo '<br>
+              <br>';
+    }
+
+    protected function getMyCreatedNotCompletedRouteCostSum() {
+
+        $user_ID = $_SESSION['u_ID'];
+        $sql = "SELECT manaIzveidotoNeizpilditoMarsrutuKopsumma('$user_ID') AS kopsumma";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -285,10 +389,10 @@ class Routes extends Database {
 
     }
 
-    protected function getCompletedRouteCostSum() {
+    protected function getMyCreatedCompletedRouteCostSum() {
 
         $user_ID = $_SESSION['u_ID'];
-        $sql = "SELECT manaIzpilditoMarsrutuKopsumma('$user_ID') AS kopsumma";
+        $sql = "SELECT manaIzveidotoIzpilditoMarsrutuKopsumma('$user_ID') AS kopsumma";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -300,10 +404,71 @@ class Routes extends Database {
 
     }
 
-    protected function showCostSum() {
+    protected function showMyCreatedRouteCostSum() {
 
-        $costNotCompletedSum = $this->getNotCompletedRouteCostSum();
-        $costCompletedSum = $this->getCompletedRouteCostSum();
+        $costNotCompletedSum = $this->getMyCreatedNotCompletedRouteCostSum();
+        $costCompletedSum = $this->getMyCreatedCompletedRouteCostSum();
+
+        if ($_SESSION['u_ID'] == 1) {
+
+            echo '<div class="float-right pr-3">
+                    <div class="float-right">
+                        Potenciālā samaksa: ' .$costNotCompletedSum['kopsumma']. '
+                    </div>
+                    <br>
+                    <div class="float-right">
+                        Samaksāts: ' .$costCompletedSum['kopsumma']. '
+                    </div>
+                </div>';
+
+        } else if ($_SESSION['u_ID'] == 2) {
+
+            echo '<div class="float-right pr-3">
+                    <div class="float-right">
+                        Potenciālā peļņa: ' .$costNotCompletedSum['kopsumma']. '
+                    </div>
+                    <br>
+                    <div class="float-right">
+                        Nopelnīts: ' .$costCompletedSum['kopsumma']. '
+                    </div>
+                </div>';
+        }
+    }
+
+    protected function getMyAppliedToNotCompletedRouteCostSum() {
+
+        $user_ID = $_SESSION['u_ID'];
+        $sql = "SELECT manaNeizveidotoNeizpilditoMarsrutuKopsumma('$user_ID') AS kopsumma";
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+    
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+
+    }
+
+    protected function getMyAppliedToCompletedRouteCostSum() {
+
+        $user_ID = $_SESSION['u_ID'];
+        $sql = "SELECT manaNeizveidotoIzpilditoMarsrutuKopsumma('$user_ID') AS kopsumma";
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+    
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+
+    }
+
+    protected function showMyAppliedToRouteCostSum() {
+
+        $costNotCompletedSum = $this->getMyAppliedToNotCompletedRouteCostSum();
+        $costCompletedSum = $this->getMyAppliedToCompletedRouteCostSum();
 
         if ($_SESSION['u_ID'] == 1) {
 

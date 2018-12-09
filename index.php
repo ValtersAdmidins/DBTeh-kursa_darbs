@@ -18,6 +18,10 @@
                         <a class="btn btn-primary" href="newPassengerRoute.php">Izveidot jaunu pasažiera maršrutu</a>
                       </div>';
 
+                echo '<h1 style="text-align: center;">↓ Marsruti kuriem esmu pieteicies ↓</h1>';
+                $myRoutes = new Routes();
+                $myRoutes->showAllMyAppliedToRoutes();
+
                 echo '<h1 style="text-align: center;">↓ Mani maršruti. ↓</h1>';
                 $myRoutes = new Routes();
                 $myRoutes->showAllMyCreatedRoutes();
@@ -51,6 +55,11 @@
                             <a class="btn btn-primary" href="newDriverVehicle.php">Pievienot transportlīdzēkli</a>
                           </div>';
                 }
+
+                echo '<h1 style="text-align: center;">↓ Marsruti kuriem esmu pieteicies ↓</h1>';
+                $myRoutes = new Routes();
+                $myRoutes->showAllMyAppliedToRoutes();
+
                 echo '<h1 style="text-align: center;">↓ Mani maršruti. ↓</h1>';
                 $myRoutes = new Routes();
                 $myRoutes->showAllMyCreatedRoutes();
