@@ -250,7 +250,7 @@ class Routes extends Database {
     protected function getNotCompletedRouteCostSum() {
 
         $user_ID = $_SESSION['u_ID'];
-        $sql = "CALL manaNeizpilditoMarsrutuKopsumma('$user_ID')";
+        $sql = "SELECT manaNeizpilditoMarsrutuKopsumma('$user_ID') AS kopsumma";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -265,7 +265,7 @@ class Routes extends Database {
     protected function getCompletedRouteCostSum() {
 
         $user_ID = $_SESSION['u_ID'];
-        $sql = "CALL manaIzpilditoMarsrutuKopsumma('$user_ID')";
+        $sql = "SELECT manaIzpilditoMarsrutuKopsumma('$user_ID') AS kopsumma";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -286,11 +286,11 @@ class Routes extends Database {
 
             echo '<div class="float-right pr-3">
                     <div class="float-right">
-                        Potenciālā samaksa: ' .$costNotCompletedSum['summaNeizpildits']. '
+                        Potenciālā samaksa: ' .$costNotCompletedSum['kopsumma']. '
                     </div>
                     <br>
                     <div class="float-right">
-                        Samaksāts: ' .$costCompletedSum['summaIzpildits']. '
+                        Samaksāts: ' .$costCompletedSum['kopsumma']. '
                     </div>
                 </div>';
 
@@ -298,11 +298,11 @@ class Routes extends Database {
 
             echo '<div class="float-right pr-3">
                     <div class="float-right">
-                        Potenciālā peļņa: ' .$costNotCompletedSum['summaNeizpildits']. '
+                        Potenciālā peļņa: ' .$costNotCompletedSum['kopsumma']. '
                     </div>
                     <br>
                     <div class="float-right">
-                        Nopelnīts: ' .$costCompletedSum['summaIzpildits']. '
+                        Nopelnīts: ' .$costCompletedSum['kopsumma']. '
                     </div>
                 </div>';
         }
@@ -548,37 +548,38 @@ class Routes extends Database {
         
         $creatorUserVehicle = $this->getRouteVehicle($route['transportlidzekli_ID']);
 
-        echo '
-        <hr>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">No valstis</th>
-                        <th scope="col">No pilsetas</th>
-                        <th scope="col">Uz valsti</th>
-                        <th scope="col">Uz pilsetu</th>
-                        <th scope="col">No adreses</th>
-                        <th scope="col">Uz adresi</th>
-                        <th scope="col">Izbraukšanas laiks</th>
-                        <th scope="col">Piedavātā samaksa</th>';
+        echo '<div class="px-3">
+                <hr>
+              </div>
+              <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">No valstis</th>
+                            <th scope="col">No pilsetas</th>
+                            <th scope="col">Uz valsti</th>
+                            <th scope="col">Uz pilsetu</th>
+                            <th scope="col">No adreses</th>
+                            <th scope="col">Uz adresi</th>
+                            <th scope="col">Izbraukšanas laiks</th>
+                            <th scope="col">Piedavātā samaksa</th>';
 
-                        if (is_array($creatorUserRoles)) {
+                            if (is_array($creatorUserRoles)) {
 
-                            foreach ($creatorUserRoles as $creatorUserRole) {
-                
-                                if ($creatorUserRole['lomas_ID'] == 1) {
-                                    echo '<th scope="col">Nepieciešamās sēdvietas</th>';
-                                } else if ($creatorUserRole['lomas_ID'] == 2) {
-                                    echo '<th scope="col">Pieejamās sēdvietas</th>';
+                                foreach ($creatorUserRoles as $creatorUserRole) {
+                    
+                                    if ($creatorUserRole['lomas_ID'] == 1) {
+                                        echo '<th scope="col">Nepieciešamās sēdvietas</th>';
+                                    } else if ($creatorUserRole['lomas_ID'] == 2) {
+                                        echo '<th scope="col">Pieejamās sēdvietas</th>';
+                                    }
                                 }
+                                
                             }
                             
-                        }
-                        
-                echo   '
-                    </tr>
-                </thead>';
+                    echo   '
+                        </tr>
+                    </thead>';
 
         if (is_array($route)) {
             
@@ -604,23 +605,25 @@ class Routes extends Database {
 
         if (is_array($creatorUser)) {
 
-            echo '
-                <hr>
-                <h1>Izveidojis lietotājs: '.$creatorUser['lietotajvards'].' </h1>
-                <h2>Vārds: '.$creatorUser['vards'].' </h2>
-                <h2>Uzvārds: '.$creatorUser['uzvards'].' </h2>
-                <h2>E-pasts: '.$creatorUser['epasts'].' </h2>
-                <h2>Telefona numurs: '.$creatorUser['telefona_numurs'].' </h2>';
+            echo '<div class="px-3">
+                    <hr>
+                    <h1>Izveidojis lietotājs: '.$creatorUser['lietotajvards'].' </h1>
+                    <h2>Vārds: '.$creatorUser['vards'].' </h2>
+                    <h2>Uzvārds: '.$creatorUser['uzvards'].' </h2>
+                    <h2>E-pasts: '.$creatorUser['epasts'].' </h2>
+                    <h2>Telefona numurs: '.$creatorUser['telefona_numurs'].' </h2>
+                  </div>';
         }
 
         if (is_array($creatorUserVehicle)) {
 
-            echo '
-                <hr>
-                <h1>Gads: '.$creatorUserVehicle['gads'].' </h1>
-                <h2>Krāsa: '.$creatorUserVehicle['krasa'].' </h2>
-                <h2>Marka: '.$creatorUserVehicle['marka'].' </h2>
-                <h2>Numurzīme: '.$creatorUserVehicle['numura_zime'].' </h2>';
+            echo '<div class="px-3">
+                    <hr>
+                    <h1>Gads: '.$creatorUserVehicle['gads'].' </h1>
+                    <h2>Krāsa: '.$creatorUserVehicle['krasa'].' </h2>
+                    <h2>Marka: '.$creatorUserVehicle['marka'].' </h2>
+                    <h2>Numurzīme: '.$creatorUserVehicle['numura_zime'].' </h2>
+                  </div>';
         }
 
     }
