@@ -20,7 +20,7 @@
 
                 echo '<h1 style="text-align: center;">↓ Mani maršruti. ↓</h1>';
                 $myRoutes = new Routes();
-                $myRoutes->showAllMyRoutes();
+                $myRoutes->showAllMyCreatedRoutes();
 
                 echo '<h1 style="text-align: center;">↓ Visi šoferu maršruti. ↓</h1>';
                 $driverRoutes = new Routes();
@@ -53,7 +53,7 @@
                 }
                 echo '<h1 style="text-align: center;">↓ Mani maršruti. ↓</h1>';
                 $myRoutes = new Routes();
-                $myRoutes->showAllMyRoutes();
+                $myRoutes->showAllMyCreatedRoutes();
                 
                 echo '<h1 style="text-align: center;">↓ Visi pasažieru maršruti. ↓</h1>';
                 $passengerRoutes = new Routes();

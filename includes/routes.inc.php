@@ -28,10 +28,12 @@ class Routes extends Database {
                 VALUES ('$country_from_name', '$city_from_name', '$country_to_name', '$city_to_name', '$insert_data[5]', '$insert_data[6]', '$insert_data[7]', '$insert_data[8]', '$insert_data[9]', 0);";
         $result1 = $conn->query($sql);
 
+        $user_ID = $insert_data[0];
         $route_ID = $conn->insert_id; // Required to get the ID of the last insert
+        $isRouteCreator = 1;
 
-        $sql = "INSERT INTO lietotajiem_ir_marsruti (lietotaji_ID, marsruti_ID)
-                VALUES ('$insert_data[0]', '$route_ID');";
+        $sql = "INSERT INTO lietotajiem_ir_marsruti (lietotaji_ID, marsruti_ID, irMarsrutaIzveidotajs)
+                VALUES ('$user_ID', '$route_ID', $isRouteCreator);";
         $result2 = $conn->query($sql);
 
         if ($result1 && $result2) {
@@ -71,10 +73,12 @@ class Routes extends Database {
                 VALUES ('$insert_data[1]', '$country_from_name', '$city_from_name', '$country_to_name', '$city_to_name', '$insert_data[6]', '$insert_data[7]', '$insert_data[8]', '$insert_data[9]', '$insert_data[10]', 0);";
         $result1 = $conn->query($sql);
 
+        $user_ID = $insert_data[0];
         $route_ID = $conn->insert_id; // Required to get the ID of the last insert
+        $isRouteCreator = 1;
 
-        $sql = "INSERT INTO lietotajiem_ir_marsruti (lietotaji_ID, marsruti_ID)
-                VALUES ('$insert_data[0]', '$route_ID');";
+        $sql = "INSERT INTO lietotajiem_ir_marsruti (lietotaji_ID, marsruti_ID, irMarsrutaIzveidotajs)
+                VALUES ('$user_ID', '$route_ID', $isRouteCreator);";
         $result2 = $conn->query($sql);
 
         if ($result1 && $result2) {
@@ -86,6 +90,25 @@ class Routes extends Database {
         else {
 
             header("Location: ../index.php?route=error");
+            exit();
+        }
+    }
+
+    public function setRouteRelation($user_ID, $route_ID, $isRouteCreator) {
+
+        $sql = "INSERT INTO lietotajiem_ir_marsruti (lietotaji_ID, marsruti_ID, irMarsrutaIzveidotajs)
+                VALUES ('$user_ID', '$route_ID', $isRouteCreator);";
+        $result = $this->connect()->query($sql);
+
+        if ($result) {
+
+            header("Location: ../route.php?route=success");
+            exit();
+        }
+
+        else {
+
+            header("Location: ../route.php?route=error");
             exit();
         }
     }
@@ -142,10 +165,10 @@ class Routes extends Database {
         }
     }
 
-    protected function getAllMyRoutes() {
+    protected function getAllMyCreatedRoutes() {
 
         $user_ID = $_SESSION['u_ID'];
-        $sql = "CALL visiManiMarsruti('$user_ID')";
+        $sql = "CALL visiManiIzveidotieMarsruti('$user_ID')";
 
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
@@ -162,9 +185,9 @@ class Routes extends Database {
 
     }
 
-    public function showAllMyRoutes() {
+    public function showAllMyCreatedRoutes() {
 
-        $myRoutes = $this->getAllMyRoutes();
+        $myRoutes = $this->getAllMyCreatedRoutes();
 
         echo '
             <hr>
@@ -563,7 +586,7 @@ class Routes extends Database {
                             <th scope="col">Uz adresi</th>
                             <th scope="col">Izbraukšanas laiks</th>
                             <th scope="col">Piedavātā samaksa</th>';
-
+                            
                             if (is_array($creatorUserRoles)) {
 
                                 foreach ($creatorUserRoles as $creatorUserRole) {
@@ -576,8 +599,12 @@ class Routes extends Database {
                                 }
                                 
                             }
+
+                            if ($creatorUser['ID'] != $_SESSION['u_ID']) {
+                                echo '<th scope="col"></th>';
+                            }
                             
-                    echo   '
+                    echo '
                         </tr>
                     </thead>';
 
@@ -594,9 +621,13 @@ class Routes extends Database {
                     <td>' .$route['uz_adrese']. '</td>
                     <td>' .$route['izbrauksanas_laiks']. '</td>
                     <td>' .$route['cena']. '</td>
-                    <td>' .$route['sedvietas']. '</td>
-                </tr>';
+                    <td>' .$route['sedvietas']. '</td>';
 
+            if ($creatorUser['ID'] != $_SESSION['u_ID']) {
+                echo '<td><a class="btn btn-primary route" href="process/applyingForRoute.php?ID='.$route['ID'].'">Pieteikties maršrutam</a></td>
+                </tr>';
+            }
+            
             echo '</tbody>';
         }
 
@@ -606,6 +637,7 @@ class Routes extends Database {
         if (is_array($creatorUser)) {
 
             echo '<div class="px-3">
+                    <h1 style="text-align: center;">↓ Informācija par lietotāju ↓</h1>
                     <hr>
                     <h1>Izveidojis lietotājs: '.$creatorUser['lietotajvards'].' </h1>
                     <h2>Vārds: '.$creatorUser['vards'].' </h2>
@@ -618,6 +650,7 @@ class Routes extends Database {
         if (is_array($creatorUserVehicle)) {
 
             echo '<div class="px-3">
+                    <h1 style="text-align: center;">↓ Informācija par transportlīdzekli ↓</h1>
                     <hr>
                     <h1>Gads: '.$creatorUserVehicle['gads'].' </h1>
                     <h2>Krāsa: '.$creatorUserVehicle['krasa'].' </h2>

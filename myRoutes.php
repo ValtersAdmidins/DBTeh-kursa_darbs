@@ -20,7 +20,7 @@
                     echo '<h1 style="text-align: center;">↓ Mani maršruti. ↓</h1>';
 
                     $myRoutes = new Routes();
-                    $myRoutes->showAllMyRoutes();
+                    $myRoutes->showAllMyCreatedRoutes();
                 }
 
                 else {
