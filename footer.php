@@ -1,5 +1,13 @@
-    <footer>
-
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="mx-auto">
+                    <div class="copyright-text">
+                        <p>CopyRight &copy <?php echo date("Y"); ?> Valters Ādmīdiņš</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <!-- JavaScript -->

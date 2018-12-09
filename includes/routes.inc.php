@@ -113,6 +113,24 @@ class Routes extends Database {
         }
     }
 
+    public function unapplyFromRoute($user_ID, $route_ID) {
+
+        $sql = "DELETE FROM lietotajiem_ir_marsruti WHERE lietotaji_ID='$user_ID' AND marsruti_ID='$route_ID'";
+        $result = $this->connect()->query($sql);
+
+        if ($result) {
+
+            header("Location: ../index.php?unapplyFromRoute=success");
+            exit();
+        }
+
+        else {
+
+            header("Location: ../index.php?unapplyFromRoute=error");
+            exit();
+        }
+    }
+
     public function getNameOfCountryByID($country_ID) {
 
         $sql = "CALL ValstsNosaukumsPecID('$country_ID')";
