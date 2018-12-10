@@ -308,15 +308,19 @@ class Routes extends Database {
             </div>';
 
         echo '<br>';
-        $this->showPotentialCosts();
+        if ($_SESSION['u_role'] == 1) {
+            $this->showMyCreatedRouteCostsAsPassenger();
+        } else if ($_SESSION['u_role'] == 2) {
+            $this->showMyCreatedRouteCostsAsDriver();
+        }
         echo '<br>
               <br>';
     }
 
-    protected function getMyCreatedNotCompletedRouteCostSum() {
+    protected function getMyCreatedNotCompletedRouteCostsAsPassenger() {
 
         $user_ID = $_SESSION['u_ID'];
-        $sql = "SELECT manaIzveidotoNeizpilditoMarsrutuSamaksa('$user_ID') AS kopsumma";
+        $sql = "SELECT pasazieraIzveidotoNeizpilditoMarsrutuSamaksa('$user_ID') AS kopsumma";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -328,10 +332,10 @@ class Routes extends Database {
 
     }
 
-    protected function getMyCreatedCompletedRouteCostSum() {
+    protected function getMyCreatedCompletedRouteCostsAsPassenger() {
 
         $user_ID = $_SESSION['u_ID'];
-        $sql = "SELECT manaIzveidotoIzpilditoMarsrutuSamaksa('$user_ID') AS kopsumma";
+        $sql = "SELECT pasazieraIzveidotoIzpilditoMarsrutuSamaksa('$user_ID') AS kopsumma";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -343,35 +347,66 @@ class Routes extends Database {
 
     }
 
-    protected function showPotentialCosts() {
+    protected function showMyCreatedRouteCostsAsPassenger() {
 
-        $costNotCompletedSum = $this->getMyCreatedNotCompletedRouteCostSum();
-        $costCompletedSum = $this->getMyCreatedCompletedRouteCostSum();
+        $costNotCompletedSum = $this->getMyCreatedNotCompletedRouteCostsAsPassenger();
+        $costCompletedSum = $this->getMyCreatedCompletedRouteCostsAsPassenger();
 
-        if ($_SESSION['u_role'] == 1) {
+        echo '<div class="float-right pr-3">
+                <div class="float-right">
+                    Gaidāmā samaksa: ' .$costNotCompletedSum['kopsumma']. '
+                </div>
+                <br>
+                <div class="float-right">
+                    Samaksāts: ' .$costCompletedSum['kopsumma']. '
+                </div>
+            </div>';
+    }
 
-            echo '<div class="float-right pr-3">
-                    <div class="float-right">
-                        Gaidāmā samaksa: ' .$costNotCompletedSum['kopsumma']. '
-                    </div>
-                    <br>
-                    <div class="float-right">
-                        Samaksāts: ' .$costCompletedSum['kopsumma']. '
-                    </div>
-                </div>';
+    protected function getMyCreatedNotCompletedRouteCostsAsDriver() {
 
-        } else if ($_SESSION['u_role'] == 2) {
+        $user_ID = $_SESSION['u_ID'];
+        $sql = "SELECT pasazieraIzveidotoNeizpilditoMarsrutuSamaksa('$user_ID') AS kopsumma";
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
 
-            echo '<div class="float-right pr-3">
-                    <div class="float-right">
-                        Gaidāmā peļņa: ' .$costNotCompletedSum['kopsumma']. '
-                    </div>
-                    <br>
-                    <div class="float-right">
-                        Nopelnīts: ' .$costCompletedSum['kopsumma']. '
-                    </div>
-                </div>';
+        if ($numRows > 0) {
+    
+            $row = $result->fetch_assoc();
+            return $row;
         }
+
+    }
+
+    protected function getMyCreatedCompletedRouteCostsAsDriver() {
+
+        $user_ID = $_SESSION['u_ID'];
+        $sql = "SELECT pasazieraIzveidotoIzpilditoMarsrutuSamaksa('$user_ID') AS kopsumma";
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+    
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+
+    }
+
+    protected function showMyCreatedRouteCostsAsDriver() {
+
+        $costNotCompletedSum = $this->getMyCreatedNotCompletedRouteCostsAsDriver();
+        $costCompletedSum = $this->getMyCreatedCompletedRouteCostsAsDriver();
+
+        echo '<div class="float-right pr-3">
+                <div class="float-right">
+                    Gaidāmā peļņa: ' .$costNotCompletedSum['kopsumma']. '
+                </div>
+                <br>
+                <div class="float-right">
+                    Nopelnīts: ' .$costCompletedSum['kopsumma']. '
+                </div>
+            </div>';
     }
 
     protected function getAllMyAppliedToRoutes() {
@@ -517,12 +552,16 @@ class Routes extends Database {
             </div>';
 
         echo '<br>';
-        $this->showAppliedToRouteCostSum();
+        if ($_SESSION['u_role'] == 1) {
+            $this->showMyAppliedToRouteCostsAsPassenger();
+        } else if ($_SESSION['u_role'] == 2) {
+            $this->showMyAppliedToCreatedRouteCostsAsDriver();
+        }
         echo '<br>
               <br>';
     }
 
-    protected function getPassengerAppliedToNotCompletedRouteCostSum() {
+    protected function getMyAppliedToNotCompletedRouteCostsAsPassenger() {
 
         $user_ID = $_SESSION['u_ID'];
         $sql = "SELECT pasazieraPieteiktoNeizpilditoMarsrutuSamaksa('$user_ID') AS kopsumma";
@@ -537,7 +576,7 @@ class Routes extends Database {
 
     }
 
-    protected function getPassengerAppliedToCompletedRouteCostSum() {
+    protected function getMyAppliedToCompletedRouteCostsAsPassenger() {
 
         $user_ID = $_SESSION['u_ID'];
         $sql = "SELECT pasazieraPieteiktoIzpilditoMarsrutuSamaksa('$user_ID') AS kopsumma";
@@ -552,7 +591,23 @@ class Routes extends Database {
 
     }
 
-    protected function getDriverAppliedToNotCompletedRouteCostSum() {
+    protected function showMyAppliedToRouteCostsAsPassenger() {
+
+        $costNotCompletedSum = $this->getMyAppliedToNotCompletedRouteCostsAsPassenger();
+        $costCompletedSum = $this->getMyAppliedToCompletedRouteCostsAsPassenger();
+
+        echo '<div class="float-right pr-3">
+                <div class="float-right">
+                    Gaidāmā samaksa: ' .$costNotCompletedSum['kopsumma']. '
+                </div>
+                <br>
+                <div class="float-right">
+                    Samaksāts: ' .$costCompletedSum['kopsumma']. '
+                </div>
+            </div>';
+    }
+
+    protected function getMyAppliedToNotCompletedRouteCostsAsDriver() {
 
         $user_ID = $_SESSION['u_ID'];
         $sql = "SELECT soferaPieteiktoNeizpilditoMarsrutuSamaksa('$user_ID') AS kopsumma";
@@ -567,7 +622,7 @@ class Routes extends Database {
 
     }
 
-    protected function getDriverAppliedToCompletedRouteCostSum() {
+    protected function getMyAppliedToCompletedRouteCostsAsDriver() {
 
         $user_ID = $_SESSION['u_ID'];
         $sql = "SELECT soferaPieteiktoIzpilditoMarsrutuSamaksa('$user_ID') AS kopsumma";
@@ -582,38 +637,20 @@ class Routes extends Database {
 
     }
 
-    protected function showAppliedToRouteCostSum() {
+    protected function showMyAppliedToRouteCostsAsDriver() {
 
-        if ($_SESSION['u_role'] == 1) {
+        $costNotCompletedSum = $this->getMyAppliedToNotCompletedRouteCostsAsDriver();
+        $costCompletedSum = $this->getMyAppliedToCompletedRouteCostsAsDriver();
 
-            $costNotCompletedSum = $this->getPassengerAppliedToNotCompletedRouteCostSum();
-            $costCompletedSum = $this->getPassengerAppliedToCompletedRouteCostSum();
-
-            echo '<div class="float-right pr-3">
-                    <div class="float-right">
-                        Gaidāmā samaksa: ' .$costNotCompletedSum['kopsumma']. '
-                    </div>
-                    <br>
-                    <div class="float-right">
-                        Samaksāts: ' .$costCompletedSum['kopsumma']. '
-                    </div>
-                </div>';
-
-        } else if ($_SESSION['u_role'] == 2) {
-            
-            $costNotCompletedSum = $this->getDriverAppliedToNotCompletedRouteCostSum();
-            $costCompletedSum = $this->getDriverAppliedToCompletedRouteCostSum();
-
-            echo '<div class="float-right pr-3">
-                    <div class="float-right">
-                        Gaidāmā peļņa: ' .$costNotCompletedSum['kopsumma']. '
-                    </div>
-                    <br>
-                    <div class="float-right">
-                        Nopelnīts: ' .$costCompletedSum['kopsumma']. '
-                    </div>
-                </div>';
-        }
+        echo '<div class="float-right pr-3">
+                <div class="float-right">
+                    Gaidāmā peļņa: ' .$costNotCompletedSum['kopsumma']. '
+                </div>
+                <br>
+                <div class="float-right">
+                    Nopelnīts: ' .$costCompletedSum['kopsumma']. '
+                </div>
+            </div>';
     }
 
     protected function getAllPassengerRoutes() {

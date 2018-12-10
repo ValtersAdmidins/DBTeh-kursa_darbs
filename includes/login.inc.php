@@ -4,7 +4,9 @@ class Login extends Database {
 
     public function getUserRoles($user_ID) {
 
-        $sql = "SELECT * FROM lietotajiem_ir_lomas WHERE lietotaji_ID='$user_ID'";
+        $sql = "SELECT * FROM lietotajiem_ir_lomas
+        JOIN lietotajiem_ir_marsruti ON lietotajiem_ir_marsruti.lietotaji_ID='$user_ID'
+        WHERE lietotajiem_ir_lomas.lietotaji_ID='$user_ID' AND lietotajiem_ir_marsruti.lietotaji_ID='$user_ID'";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
