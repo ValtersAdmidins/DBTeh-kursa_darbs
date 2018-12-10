@@ -366,7 +366,7 @@ class Routes extends Database {
     protected function getMyCreatedNotCompletedRouteCostsAsDriver() {
 
         $user_ID = $_SESSION['u_ID'];
-        $sql = "SELECT pasazieraIzveidotoNeizpilditoMarsrutuSamaksa('$user_ID') AS kopsumma";
+        $sql = "SELECT soferaIzveidotoNeizpilditoMarsrutuSamaksa('$user_ID') AS kopsumma";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -381,7 +381,7 @@ class Routes extends Database {
     protected function getMyCreatedCompletedRouteCostsAsDriver() {
 
         $user_ID = $_SESSION['u_ID'];
-        $sql = "SELECT pasazieraIzveidotoIzpilditoMarsrutuSamaksa('$user_ID') AS kopsumma";
+        $sql = "SELECT soferaIzveidotoIzpilditoMarsrutuSamaksa('$user_ID') AS kopsumma";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -462,8 +462,6 @@ class Routes extends Database {
                     </thead>';
 
         if (is_array($myAppliedToRoutes)) {
-            
-            $userLogin = new Login();
 
             echo '<tbody>';
 
@@ -471,9 +469,6 @@ class Routes extends Database {
 
                 $countOfUsersAppliedToRoute = $this->getCountOfUsersAppliedToRoute($myAppliedToRoute['ID']);
                 $seats = $myAppliedToRoute['sedvietas'] - $countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki'];
-
-                $creatorUser = $this->getRouteCreatorUser($myAppliedToRoute['ID']);
-                $creatorUserRoles = $userLogin->getUserRoles($creatorUser['ID']);
 
                 if ($myAppliedToRoute['irIzpildits'] == 0) {
 
@@ -493,23 +488,18 @@ class Routes extends Database {
                             <td>' .$myAppliedToRoute['izbrauksanas_laiks']. '</td>
                             <td>' .$myAppliedToRoute['cena']. '</td>';
                             
-                    if (is_array($creatorUserRoles)) {
-
-                        foreach ($creatorUserRoles as $creatorUserRole) {
-            
-                            if ($creatorUserRole['lomas_ID'] == 1) {
-                                echo '<td>'.$myAppliedToRoute['sedvietas'].'</td>';
-                            } else if ($creatorUserRole['lomas_ID'] == 2) {
-                                echo '<td>Brīvas: ' .$seats. '
-                                <br>
-                                Aizņemtas: ' .$countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki']. '</td>';
-                            }
-                        }
+                    if ($_SESSION['u_role'] == 1) {
+                        echo '<td>'.$myAppliedToRoute['sedvietas'].'</td>';
+                    } else if ($_SESSION['u_role'] == 2) {
+                        echo '<td>Brīvas: ' .$seats. '
+                        <br>
+                        Aizņemtas: ' .$countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki']. '</td>';
                     }
                             
                     echo '  <td colspan="2"></td>
                             <td><a class="btn btn-danger route" href="process/unapplyingFromRoute.php?ID='.$myAppliedToRoute['ID'].'">Atteikties no maršruta!</a></td>
                           </tr>';
+
                 } else if ($myAppliedToRoute['irIzpildits'] == 1) {
 
                     echo '<tr class="routeCompleted">
@@ -523,18 +513,12 @@ class Routes extends Database {
                             <td>' .$myAppliedToRoute['izbrauksanas_laiks']. '</td>
                             <td>' .$myAppliedToRoute['cena']. '</td>';
 
-                    if (is_array($creatorUserRoles)) {
-
-                        foreach ($creatorUserRoles as $creatorUserRole) {
-            
-                            if ($creatorUserRole['lomas_ID'] == 1) {
-                                echo '<td>'.$myAppliedToRoute['sedvietas'].'</td>';
-                            } else if ($creatorUserRole['lomas_ID'] == 2) {
-                                echo '<td>Brīvas: ' .$seats. '
-                                        <br>
-                                        Aizņemtas: ' .$countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki']. '</td>';
-                            }
-                        }
+                    if ($_SESSION['u_role'] == 1) {
+                        echo '<td>Brīvas: ' .$seats. '
+                        <br>
+                        Aizņemtas: ' .$countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki']. '</td>';
+                    } else if ($_SESSION['u_role'] == 2) {
+                        echo '<td>'.$myAppliedToRoute['sedvietas'].'</td>';
                     }
 
                     echo '  <td colspan="2">Maršruts atzīmēts kā izpildīts</td>
@@ -555,7 +539,7 @@ class Routes extends Database {
         if ($_SESSION['u_role'] == 1) {
             $this->showMyAppliedToRouteCostsAsPassenger();
         } else if ($_SESSION['u_role'] == 2) {
-            $this->showMyAppliedToCreatedRouteCostsAsDriver();
+            $this->showMyAppliedToRouteCostsAsDriver();
         }
         echo '<br>
               <br>';
@@ -872,7 +856,7 @@ class Routes extends Database {
 
         $sql = "SELECT * FROM lietotaji
                 JOIN lietotajiem_ir_marsruti ON lietotaji_ID=ID
-                WHERE marsruti_ID='$route_ID';";
+                WHERE marsruti_ID='$route_ID' AND irMarsrutaIzveidotajs=1;";
 
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
@@ -885,10 +869,46 @@ class Routes extends Database {
 
     }
 
+    public function getRouteCreatorUserRoles($user_ID) {
+
+        $sql = "SELECT DISTINCT lomas_ID FROM lietotajiem_ir_lomas
+                JOIN lietotajiem_ir_marsruti ON lietotajiem_ir_marsruti.lietotaji_ID='$user_ID'
+                WHERE lietotajiem_ir_lomas.lietotaji_ID=2 AND lietotajiem_ir_marsruti.lietotaji_ID='$user_ID'";
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+            
+            while ($row = $result->fetch_assoc()) {
+
+                $data[] = $row;
+            }
+
+            return $data;
+        }
+    }
+
     protected function getRouteVehicle($vehicle_ID) {
 
         $sql = "SELECT * FROM transportlidzekli
                 WHERE ID='$vehicle_ID';";
+
+        $result = $this->connect()->query($sql);
+        $numRows = $result->num_rows;
+
+        if ($numRows > 0) {
+            
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+    }
+
+    protected function checkIfAppliedToRoute($route_ID) {
+
+        $user_ID = $_SESSION['u_ID'];
+
+        $sql = "SELECT lietotaji_ID FROM lietotajiem_ir_marsruti
+                WHERE lietotaji_ID='$user_ID' AND marsruti_ID='$route_ID';";
 
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
@@ -913,15 +933,27 @@ class Routes extends Database {
         }
     }
 
+    
+
     public function showARoute($route_ID) {
 
         $route = $this->getARoute($route_ID);
         $creatorUser = $this->getRouteCreatorUser($route_ID);
-        $userLogin = new Login();
-        $creatorUserRoles = $userLogin->getUserRoles($creatorUser['ID']);
+        $creatorUserRoles = $this->getRouteCreatorUserRoles($creatorUser['ID']);
         
         $creatorUserVehicle = $this->getRouteVehicle($route['transportlidzekli_ID']);
         $checkIfAppliedToRoute = $this->checkIfAppliedToRoute($route_ID);
+
+        if (is_array($creatorUserRoles)) {
+
+            $creatorUserRolesArray = array();
+
+            foreach ($creatorUserRoles as $creatorUserRole => $role) {
+                
+                $creatorUserRolesArray[] = $role['lomas_ID'];
+            }
+            
+        }
 
         echo '<div class="px-3">
                 <hr>
@@ -938,18 +970,11 @@ class Routes extends Database {
                             <th scope="col">Uz adresi</th>
                             <th scope="col">Izbraukšanas laiks</th>
                             <th scope="col">Piedavātā samaksa</th>';
-                            
-                            if (is_array($creatorUserRoles)) {
-
-                                foreach ($creatorUserRoles as $creatorUserRole) {
-                    
-                                    if ($creatorUserRole['lomas_ID'] == 1) {
-                                        echo '<th scope="col">Nepieciešamās sēdvietas</th>';
-                                    } else if ($creatorUserRole['lomas_ID'] == 2) {
-                                        echo '<th scope="col">Pieejamās sēdvietas</th>';
-                                    }
-                                }
-                                
+                         
+                            if (in_array(1, $creatorUserRolesArray)) {
+                                echo '<th scope="col">Nepieciešamās sēdvietas</th>';
+                            } else if (in_array(2, $creatorUserRolesArray)) {
+                                echo '<th scope="col">Pieejamās sēdvietas</th>';
                             }
 
                             if ($creatorUser['ID'] != $_SESSION['u_ID']) {
@@ -981,9 +1006,9 @@ class Routes extends Database {
                     <td>' .$route['izbrauksanas_laiks']. '</td>
                     <td>' .$route['cena']. '</td>';
 
-                    if ($creatorUserRole['lomas_ID'] == 1) {
+                    if (in_array(1, $creatorUserRolesArray)) {
                         echo '<td>'.$route['sedvietas'].'</td>';
-                    } else if ($creatorUserRole['lomas_ID'] == 2) {
+                    } else if (in_array(2, $creatorUserRolesArray)) {
                         echo '<td>Brīvas: ' .$seats. '
                                 <br>
                                 Aizņemtas: ' .$countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki']. '</td>';
@@ -991,9 +1016,9 @@ class Routes extends Database {
 
             if (!$checkIfAppliedToRoute && $seats != 0) {
 
-                if ($creatorUserRole['lomas_ID'] == 1) {
+                if (in_array(1, $creatorUserRolesArray)) {
                     echo '<td><a class="btn btn-primary route" href="process/applyingForRoute.php?ID='.$route['ID'].'">Pieteikties maršrutam</a></td>';
-                } else if ($creatorUserRole['lomas_ID'] == 2) {
+                } else if (in_array(2, $creatorUserRolesArray)) {
                     echo '<td><a class="btn btn-primary route" href="process/applyingForRoute.php?ID='.$route['ID'].'">Pieteikties maršrutam</a></td>';
                 }
 
@@ -1012,9 +1037,9 @@ class Routes extends Database {
                     <h1 style="text-align: center;">↓ Informācija par lietotāju ↓</h1>
                     <hr>';
 
-            if ($creatorUserRole['lomas_ID'] == 1) {
+            if (in_array(1, $creatorUserRolesArray)) {
                 echo '<h1>Izveidojis pasažieris: '.$creatorUser['lietotajvards'].' </h1>';
-            } else if ($creatorUserRole['lomas_ID'] == 2) {
+            } else if (in_array(2, $creatorUserRolesArray)) {
                 echo '<h1>Izveidojis šoferis: '.$creatorUser['lietotajvards'].' </h1>';
             }
                     
@@ -1118,23 +1143,6 @@ class Routes extends Database {
 
             header("Location: ../index.php?delete=error");
             exit();
-        }
-    }
-
-    protected function checkIfAppliedToRoute($route_ID) {
-
-        $user_ID = $_SESSION['u_ID'];
-
-        $sql = "SELECT lietotaji_ID FROM lietotajiem_ir_marsruti
-                WHERE lietotaji_ID='$user_ID' AND marsruti_ID='$route_ID';";
-
-        $result = $this->connect()->query($sql);
-        $numRows = $result->num_rows;
-
-        if ($numRows > 0) {
-            
-            $row = $result->fetch_assoc();
-            return $row;
         }
     }
 
