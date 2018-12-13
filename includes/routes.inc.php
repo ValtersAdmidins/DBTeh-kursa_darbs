@@ -1,6 +1,7 @@
 <?php
 
 include 'login.inc.php';
+include 'includes/vehicle.inc.php';
 
 class Routes extends Database {
 
@@ -489,11 +490,12 @@ class Routes extends Database {
                             <td>' .$myAppliedToRoute['cena']. '</td>';
                             
                     if ($_SESSION['u_role'] == 1) {
-                        echo '<td>'.$myAppliedToRoute['sedvietas'].'</td>';
-                    } else if ($_SESSION['u_role'] == 2) {
                         echo '<td>Brīvas: ' .$seats. '
                         <br>
                         Aizņemtas: ' .$countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki']. '</td>';
+                    } else if ($_SESSION['u_role'] == 2) {
+                        echo '<td>'.$myAppliedToRoute['sedvietas'].'</td>';
+
                     }
                             
                     echo '  <td colspan="2"></td>
@@ -769,6 +771,7 @@ class Routes extends Database {
                             <th scope="col">Izbraukšanas laiks</th>
                             <th scope="col">Piedavātā samaksa</th>
                             <th scope="col">Pieejamās sēdvietas</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>';
 
@@ -801,8 +804,8 @@ class Routes extends Database {
                             <td>Brīvas: ' .$seats. '
                             <br>
                             Aizņemtas: ' .$countOfUsersAppliedToRoute['marsrutaNeizveidotajiDalibnieki']. '</td>
-
                             <td></td>
+
                         </tr>';
 
                 } else if ($driverRoute['irIzpildits'] == 1) {
@@ -854,7 +857,7 @@ class Routes extends Database {
 
     protected function getRouteCreatorUser($route_ID) {
 
-        $sql = "SELECT * FROM lietotaji
+        $sql = "SELECT ID, vards, uzvards, epasts, telefona_numurs, lietotajvards FROM lietotaji
                 JOIN lietotajiem_ir_marsruti ON lietotaji_ID=ID
                 WHERE marsruti_ID='$route_ID' AND irMarsrutaIzveidotajs=1;";
 
@@ -871,9 +874,7 @@ class Routes extends Database {
 
     public function getRouteCreatorUserRoles($user_ID) {
 
-        $sql = "SELECT DISTINCT lomas_ID FROM lietotajiem_ir_lomas
-                JOIN lietotajiem_ir_marsruti ON lietotajiem_ir_marsruti.lietotaji_ID='$user_ID'
-                WHERE lietotajiem_ir_lomas.lietotaji_ID=2 AND lietotajiem_ir_marsruti.lietotaji_ID='$user_ID'";
+        $sql = "SELECT DISTINCT lomas_ID FROM lietotajiem_ir_lomas WHERE lietotaji_ID='$user_ID';";
         $result = $this->connect()->query($sql);
         $numRows = $result->num_rows;
 
@@ -977,9 +978,7 @@ class Routes extends Database {
                                 echo '<th scope="col">Pieejamās sēdvietas</th>';
                             }
 
-                            if ($creatorUser['ID'] != $_SESSION['u_ID']) {
-                                echo '<th scope="col"></th>';
-                            }
+                            echo '<th scope="col"></th>';
                             
                     echo '
                         </tr>
@@ -1017,14 +1016,21 @@ class Routes extends Database {
             if (!$checkIfAppliedToRoute && $seats != 0) {
 
                 if (in_array(1, $creatorUserRolesArray)) {
-                    echo '<td><a class="btn btn-primary route" href="process/applyingForRoute.php?ID='.$route['ID'].'">Pieteikties maršrutam</a></td>';
+
+                    $myVehicles = new Vehicles();
+                    $myVehicles->checkIfUserHasVehicle($_SESSION['u_ID']);
+
+                    if (isset($_SESSION['u_vehicle'])) {
+                        echo '<td><a class="btn btn-primary route" href="process/applyingForRoute.php?ID='.$route['ID'].'">Pieteikties maršrutam</a></td>';
+                    }
                 } else if (in_array(2, $creatorUserRolesArray)) {
                     echo '<td><a class="btn btn-primary route" href="process/applyingForRoute.php?ID='.$route['ID'].'">Pieteikties maršrutam</a></td>';
                 }
-
-                echo '</tr>';
+                
+            } else {
+                echo '<th scope="col"></th>';
             }
-            
+            echo '</tr>';
             echo '</tbody>';
         }
 

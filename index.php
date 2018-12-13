@@ -3,7 +3,6 @@
     include_once 'header.php';
     include 'includes/database.inc.php';
     include 'includes/routes.inc.php';
-    include 'includes/vehicle.inc.php';
             
 ?>
     
