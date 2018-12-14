@@ -43,7 +43,7 @@
                 <input type="radio" name="role" value="soferis">Šoferis
             </div>
 
-            <button class="btn btn-primary" type="submit" name="submit">Sign up</button>
+            <button class="btn btn-primary" type="submit" name="submit">Reģistrēties!</button>
             
         </form>
 
